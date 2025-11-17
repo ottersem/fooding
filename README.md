@@ -1,11 +1,17 @@
-# fooding
+# Fooding
 
-## Monorepo
-fooding/               
-├── requirements.txt        
-├── static/                 # [Frontend] 은비
+## Project Structure
+
+
+```bash
+fooding/
+├── requirements.txt 
+├── static/                 # 은비
 │   └── ...
-├── app/                    # [Backend] 진서
+│
+├── app/                    # 진서
 │   └── ...
-└── core/                   # [AI/Logic] 승민
-│   └── ...
+│
+└── core/                   # 승민 
+    └── ...
+```
