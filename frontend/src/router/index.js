@@ -49,33 +49,27 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    children: [
-      {
-        path: 'desc',
-        name: 'RegisterDesc',
-        component: () => import(/* webpackChunkName: "register-desc" */ "@/pages/Register/RegisterDesc.vue")
-      },
-      {
-        path: 'detail',
-        name: 'RegisterDetail',
-        component: () => import(/* webpackChunkName: "register-detail" */ "@/pages/Register/RegisterDetail.vue")
-      },
-      {
-        path: 'keyword',
-        name: 'RegisterKeyword',
-        component: () => import(/* webpackChunkName: "register-keyword" */ "@/pages/Register/RegisterKeyword.vue")
-      },
-      {
-        path: 'time',
-        name: 'RegisterTime',
-        component: () => import(/* webpackChunkName: "register-time" */ "@/pages/Register/RegisterTime.vue")
-      }
-    ]
+    component: () => import(/* webpackChunkName: "sign-up" */ "@/pages/Register/Register.vue")
   },
   {
-    path: '/sign-up',
-    name: 'SignUp',
-    component: () => import(/* webpackChunkName: "sign-up" */ "@/pages/Auth/SignUp.vue")
+    path: '/register/desc',
+    name: 'RegisterDesc',
+    component: () => import(/* webpackChunkName: "register-desc" */ "@/pages/Register/RegisterDesc.vue")
+  },
+  {
+    path: '/register/basic',
+    name: 'RegisterBasic',
+    component: () => import(/* webpackChunkName: "register-basic" */ "@/pages/Register/RegisterBasic.vue")
+  },
+  {
+    path: '/register/keyword',
+    name: 'RegisterKeyword',
+    component: () => import(/* webpackChunkName: "register-keyword" */ "@/pages/Register/RegisterKeyword.vue")
+  },
+  {
+    path: '/register/time',
+    name: 'RegisterTime',
+    component: () => import(/* webpackChunkName: "register-time" */ "@/pages/Register/RegisterTime.vue")
   },
 ];
 

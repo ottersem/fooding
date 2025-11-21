@@ -77,7 +77,7 @@
       <v-col
         cols="auto"
         class="info-text | underline | login-text-link"
-        @click="handleClickBtn('gotoSignUp')"
+        @click="handleClickBtn('goToRegister')"
       >
         회원가입
       </v-col>
@@ -119,8 +119,8 @@ function handleClickBtn(action) {
     case 'findIdPw':
       break;
 
-    case 'gotoSignUp':
-      navigateTo(router, '/sign-up');
+    case 'goToRegister':
+      navigateTo(router, '/register');
       break;
 
     case 'login':

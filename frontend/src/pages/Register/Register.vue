@@ -44,6 +44,7 @@
     </v-row>
     <v-row no-gutters class="justify-center | mt-4 | mb-4">
       <v-btn
+        @click="handleClickBtn('register')"
         variant="outlined"
         class="active-btn"
       >회원가입</v-btn>
@@ -107,11 +108,11 @@ function handleClickBtn(action) {
       navigateTo(router, '/login');
       break;
 
-    case 'login':
-      console.log('로그인 버튼 클릭. 이메일:', email.value, '비밀번호:', password.value);
-      // 로그인 처리 로직
-      // 예: loginUser(email.value, password.value);
+    case 'register':
+      console.log('회원가입 버튼 클릭. 이메일:', email.value, '비밀번호:', password.value);
+      navigateTo(router, '/register/basic');
       break;
+
     default:
       console.error('알 수 없는 인증 액션 타입:', action);
   }

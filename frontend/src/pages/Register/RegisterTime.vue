@@ -60,40 +60,5 @@ function handleClickBtn(action) {
 </script> 
 
 <style scoped>
-.register-detail {
-  padding: 20px;
-  text-align: center;
-}
 
-.register-detail h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.register-detail p {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.next-button {
-  padding: 12px 30px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.next-button:hover {
-  background-color: #0056b3;
-}
 </style>
