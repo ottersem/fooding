@@ -1,5 +1,5 @@
 <template>
-  <BoxContainer style="background-color: #FFFFFF;">
+  <BoxContainer style="background-color: #FFFFFF; padding: 0px 16px 0px 16px;">
     <v-row 
       no-gutters
       class="justify-center | pt-12 | mb-8"

@@ -28,9 +28,7 @@ onUnmounted(() => {
 
 <style scoped>
 
-.container-box {
-  padding-left: 16px; 
-  padding-right: 16px;           
+.container-box {        
   width: 100%;
   height: 100%;
   max-width: 1290px;
