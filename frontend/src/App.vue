@@ -1,6 +1,6 @@
 <template>
   <v-app class="background">
-    <v-app-bar app color="#FBFBFB" flat height="100" v-if="sAppBar">
+    <v-app-bar app color="#FFFFFF" flat height="100" v-if="sAppBar">
       <v-row class="align-center | justify-space-between | padding-32 | padding-top-56 | padding-bottom-16">
         <!-- 로고 -->
         <v-col cols="auto">

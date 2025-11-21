@@ -1,5 +1,5 @@
 <template>
-  <div class="container-box | pt-4">
+  <div class="container-box">
     <slot></slot>
   </div>
 </template>
@@ -29,8 +29,8 @@ onUnmounted(() => {
 <style scoped>
 
 .container-box {
-  padding-left: 36px; 
-  padding-right: 36px;           
+  padding-left: 16px; 
+  padding-right: 16px;           
   width: 100%;
   height: 100%;
   max-width: 1290px;
