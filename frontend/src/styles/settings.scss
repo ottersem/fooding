@@ -1,0 +1,23 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+
+	
+// 글로벌 스타일에 폰트 적용
+@use "./fonts/fonts.scss";
+@use "./variables.scss" as *;  // 모든 변수를 글로벌 네임스페이스로 불러오기
+
+body {
+    font-family: $body-font-family;  // 전체적인 폰트 적용
+}
+
+* {
+    font-family: $body-font-family;  // 모든 요소에 폰트 적용
+}
