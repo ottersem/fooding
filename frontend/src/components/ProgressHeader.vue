@@ -4,7 +4,7 @@
         <v-btn
           icon="mdi-chevron-left" 
           variant="text" density="comfortable"
-          @click="goBack"
+          @click="handleClickBtn('goToBack')"
         ></v-btn>
     </v-col>
 
@@ -29,6 +29,7 @@
 import { onMounted, onUnmounted, ref, computed } from "vue";
 import { useRouter } from 'vue-router'; // goBack 함수를 위해 추가
 
+const emit = defineEmits(['go-back']);
 const router = useRouter();
 
 // Props 정의 및 기본값 지정
@@ -58,9 +59,17 @@ onUnmounted(() => {
 });
 
 // ----- 함수 정의 ----- //
-const goBack = () => {
-  console.log('뒤로가기 버튼 클릭됨');
-};
+function handleClickBtn(action) {
+  switch (action) {
+    case 'goToBack':
+      console.log('Go back button clicked');
+      emit('go-back');
+      break;
+
+    default:
+      console.error('알 수 없는 액션 타입:', action);
+  }
+}
 
 
 </script>

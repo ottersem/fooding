@@ -1,23 +1,37 @@
 <template>
-  <div class="register-detail">
-    <h2>상세 정보</h2>
-    <p>그룹의 상세 정보를 입력해주세요.</p>
-    
-    <div class="button-group">
-      <button class="prev-button" @click="goToPrev">이전</button>
-      <button class="complete-button" @click="completeRegister">완료</button>
-    </div>
-  </div>
+    <ProgressHeader 
+      @go-back="handleClickBtn('goToBack')"
+      :totalSteps="4" :currentStep="4"
+    />
+
+    <v-row no-gutters class="justify-center | pr-4 | pl-4">
+      <v-col cols="12">
+        <RegisterHeader :title="title" :desc="desc"/>
+      </v-col>
+  
+      <v-col cols="12" class="justify-center | mt-4 | mb-4">
+        <v-btn
+          variant="outlined"
+          class="active-btn"
+          @click="handleClickBtn('goToNext')"
+        >다음</v-btn>
+      </v-col>
+    </v-row>
+
 </template>
 
 <script setup>
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-
-const emit = defineEmits(['hide-top-appbar']);
+import RegisterHeader from "@/components/RegisterHeader.vue";
+import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 
 
+const emit = defineEmits(['hide-top-appbar']);
+
+const title = "한줄 소개";
+const desc = "나를 소개할 수 있는 한마디를 작성해주세요";
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -29,18 +43,21 @@ onUnmounted(() => {
 });
 
 // ----- 함수 정의 ----- //
-const goToPrev = () => {
-  router.push({ name: 'RegisterKeyword' });
-};
 
-const goToNext = () => {
-  router.push({ name: 'RegisterDesc' });
-};
+function handleClickBtn(action) {
+  switch (action) {
+    case 'goToBack':
+      navigateTo(router, '/register/time');
+      break;
 
-const completeRegister = () => {
-  console.log('등록 완료!');
-  // router.push({ name: 'Home' });
-};
+    case 'goToNext':
+      // navigateTo(router, '/register/desc');
+      break;
+
+    default:
+      console.error('알 수 없는 액션 타입:', action);
+  }
+}
 
 </script> 
 
@@ -67,7 +84,6 @@ const completeRegister = () => {
   justify-content: center;
 }
 
-.prev-button,
 .next-button {
   padding: 12px 30px;
   background-color: #007bff;
@@ -79,30 +95,7 @@ const completeRegister = () => {
   transition: background-color 0.3s;
 }
 
-.prev-button {
-  background-color: #6c757d;
-}
-
-.prev-button:hover {
-  background-color: #5a6268;
-}
-
 .next-button:hover {
   background-color: #0056b3;
-}
-
-.complete-button {
-  padding: 12px 30px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.complete-button:hover {
-  background-color: #218838;
 }
 </style>

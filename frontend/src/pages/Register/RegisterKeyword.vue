@@ -1,23 +1,36 @@
 <template>
-  <div class="register-keyword">
-    <h2>키워드 선택</h2>
-    <p>그룹의 키워드를 선택해주세요.</p>
-    
-    <div class="button-group">
-      <button class="prev-button" @click="goToPrev">이전</button>
-      <button class="next-button" @click="goToNext">다음</button>
-    </div>
-  </div>
+    <ProgressHeader 
+      @go-back="handleClickBtn('goToBack')"
+      :totalSteps="4" :currentStep="2"
+    />
+
+    <v-row no-gutters class="justify-center | pr-4 | pl-4">
+      <v-col cols="12">
+        <RegisterHeader :title="title" :desc="desc"/>
+      </v-col>
+  
+      <v-col cols="12" class="justify-center | mt-4 | mb-4">
+        <v-btn
+          variant="outlined"
+          class="active-btn"
+          @click="handleClickBtn('goToNext')"
+        >다음</v-btn>
+      </v-col>
+    </v-row>
 </template>
 
 <script setup>
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-
-const emit = defineEmits(['hide-top-appbar']);
+import RegisterHeader from "@/components/RegisterHeader.vue";
+import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 
 
+const emit = defineEmits(['hide-top-appbar']);
+
+const title = "관심 있는 주제를 선택해주세요 (최대 2개)";
+const desc = "비슷한 관심사를 가진 사람과 연결될 확률이 높아져요";
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -29,28 +42,35 @@ onUnmounted(() => {
 });
 
 // ----- 함수 정의 ----- //
-const goToPrev = () => {
-  router.push({ name: 'RegisterTime' });
-};
+function handleClickBtn(action) {
+  switch (action) {
+    case 'goToBack':
+      navigateTo(router, '/register/detail');
+      break;
 
-const goToNext = () => {
-  router.push({ name: 'RegisterDesc' });
-};
+    case 'goToNext':
+      navigateTo(router, '/register/time');
+      break;
+
+    default:
+      console.error('알 수 없는 액션 타입:', action);
+  }
+}
 
 </script> 
 
 <style scoped>
-.register-keyword {
+.register-detail {
   padding: 20px;
   text-align: center;
 }
 
-.register-keyword h2 {
+.register-detail h2 {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.register-keyword p {
+.register-detail p {
   font-size: 16px;
   color: #666;
   margin-bottom: 30px;
@@ -62,7 +82,6 @@ const goToNext = () => {
   justify-content: center;
 }
 
-.prev-button,
 .next-button {
   padding: 12px 30px;
   background-color: #007bff;
@@ -72,14 +91,6 @@ const goToNext = () => {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-}
-
-.prev-button {
-  background-color: #6c757d;
-}
-
-.prev-button:hover {
-  background-color: #5a6268;
 }
 
 .next-button:hover {
