@@ -8,15 +8,13 @@
       <v-col cols="12">
         <RegisterHeader :title="title" :desc="desc"/>
       </v-col>
-  
-      <v-col cols="12" class="justify-center | mt-4 | mb-4">
-        <v-btn
-          variant="outlined"
-          class="active-btn"
-          @click="handleClickBtn('goToNext')"
-        >다음</v-btn>
-      </v-col>
+
     </v-row>
+
+    <ProgressFooter
+      @go-next="handleClickBtn('goToNext')"
+      :active="active"
+    />
 </template>
 
 <script setup>
@@ -31,6 +29,8 @@ const emit = defineEmits(['hide-top-appbar']);
 
 const title = "관심 있는 주제를 선택해주세요 (최대 2개)";
 const desc = "비슷한 관심사를 가진 사람과 연결될 확률이 높아져요";
+
+const active = ref(false);
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
