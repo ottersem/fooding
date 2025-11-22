@@ -4,12 +4,35 @@
       :totalSteps="4" :currentStep="1"
     />
 
-    <v-row no-gutters class="justify-center | pr-4 | pl-4">
-      <v-col cols="12">
-        <RegisterHeader :title="title" :desc="desc"/>
-      </v-col>
+    <v-container class="justify-center | pr-4 | pl-4 | pt-0">
+      <RegisterHeader :title="title" :desc="desc"/>
 
-    </v-row>
+      <v-row no-gutters class="justify-start | label-text">
+        학과
+      </v-row>
+      <v-row no-gutters class="justify-center | mt-1">
+        <v-text-field
+          v-model="Username"
+          placeholder="예술공학과" 
+          class="inputbox"
+          variant="outlined" density="comfortable" rounded="lg" bg-color="#FFFFFF" base-color="#E5E8EB" color="#E5E8EB"
+        />
+      </v-row>
+
+      <v-row no-gutters class="justify-start | label-text">
+        학년
+      </v-row>
+      <v-row no-gutters class="justify-center | mt-1">
+        <v-select
+          v-model="grade"
+          :items="gradeOptions"
+          placeholder="예술공학과" 
+          class="inputbox"
+          variant="outlined" density="comfortable" rounded="lg" bg-color="#FFFFFF" base-color="#E5E8EB" color="#E5E8EB"
+        />
+      </v-row>
+
+    </v-container>
 
     <ProgressFooter
       @go-next="handleClickBtn('goToNext')"
@@ -34,6 +57,15 @@ const title = "기본 정보를 입력해주세요";
 const desc = "학과와 학년 정보를 알려주세요";
 
 const active = ref(false);
+
+const grade = ref(null);
+const gradeOptions = ref([
+  '1학년',
+  '2학년',
+  '3학년',
+  '4학년',
+  '5학년 이상',
+]);
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -64,5 +96,10 @@ function handleClickBtn(action) {
 </script> 
 
 <style scoped>
+.label-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #364153;
+}
 
 </style>

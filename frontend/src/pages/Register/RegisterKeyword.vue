@@ -4,7 +4,7 @@
       :totalSteps="4" :currentStep="2"
     />
 
-    <v-row no-gutters class="justify-center | pr-4 | pl-4">
+    <v-row no-gutters class="justify-center | pr-4 | pl-4 | pt-0">
       <v-col cols="12">
         <RegisterHeader :title="title" :desc="desc"/>
       </v-col>

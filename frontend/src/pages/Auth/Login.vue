@@ -10,7 +10,7 @@
     <v-row no-gutters class="justify-start | label-text">
       이메일
     </v-row>
-    <v-row no-gutters class="justify-center">
+    <v-row no-gutters class="justify-center | mt-1">
       <v-text-field
         v-model="Username"
         placeholder="email@cau.ac.kr" 
@@ -21,7 +21,7 @@
     <v-row no-gutters class="justify-start | label-text">
       비밀번호
     </v-row>
-    <v-row no-gutters class="justify-center">
+    <v-row no-gutters class="justify-center | mt-1">
       <v-text-field
         v-model="password"
         placeholder="password"
@@ -170,8 +170,8 @@ function handleClickBtn(action) {
 
 .label-text {
   font-size: 14px;
-  font-weight: 400;
-  color: #695C5C;
+  font-weight: 600;
+  color: #364153;
 }
 
 .info-text {
