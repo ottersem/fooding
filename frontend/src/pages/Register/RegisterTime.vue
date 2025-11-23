@@ -9,9 +9,14 @@
 
       <v-row no-gutters class="justify-start">
           <v-chip
-            variant="outlined" append-icon=""
+            variant="outlined"
             class="info-chips"
           >
+            <template v-slot:prepend>
+              <v-icon
+                color="#9CA3AF" size="large" icon="$cus-shine-line" class="mr-2"
+              />
+            </template>
             학우들이 가장 많이 선택한 시간을 추천드렸어요!
           </v-chip>
       </v-row>
@@ -19,37 +24,32 @@
       <v-row no-gutters class="justify-start | mt-6">
         <v-col 
           v-for="(actTime, index) in actTimeList" :key="index"
-          cols="12" class="mt-2"
+          cols="12" class="mb-3"
         >
           <v-btn
             @click="toggleKeyword(actTime.tag)"
-            variant="outlined" rounded="lg" block
+            variant="outlined"
             :class="{ 'selected-btn': selectTime.includes(actTime.tag) }"
             :disabled="isButtonDisabled(actTime.tag)"
-            class="time-btn"
+            class="time-btn" block
           >
             <template v-slot:prepend>
               <v-icon
-                class="radio-icon"
-                :color="selectTime.includes(actTime.tag) ? '#FF6129' : '#9CA3AF'"
+                class="radio-icon" size="large"
+                :color="selectTime.includes(actTime.tag) ? '#FF6129' : '#E5E7EB'"
               >
                 {{ selectTime.includes(actTime.tag) ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank' }}
               </v-icon>
               <span class="btn-text" :class="{ 'selected-text': selectTime.includes(actTime.tag) }" style="text-align: left;">{{ actTime.text }}</span>
             </template>
-
             <template v-slot:append>
               <span class="btn-time" :class="{ 'selected-text': selectTime.includes(actTime.tag) }" style="text-align: right;">{{ actTime.time }}</span>
               <v-icon
-                class="trailing-icon"
-                color="#9CA3AF"
-                size="20"
-              >
-                mdi-chevron-right
-              </v-icon>
+                v-if="actTime.recm"
+                color="#9CA3AF" size="large" icon="$cus-shine-fill" class="ml-1"
+              />
             </template>
           </v-btn>
-          
         </v-col>
       </v-row>
     </v-container>
@@ -62,7 +62,7 @@
 
 <script setup>
 // ----- 선언부 ----- //
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RegisterHeader from "@/components/RegisterHeader.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
@@ -72,7 +72,9 @@ const router = useRouter();
 const emit = defineEmits(['hide-top-appbar']);
 
 const title = "활동 가능한 시간대는?";
-const desc = "여러 개를 선택할 수 있어요 (3/4개 선택)"; 
+const desc = computed(() => {
+    return `여러 개를 선택할 수 있어요 (${selectTime.value.length}/${maxSelection}개 선택)`;
+});
 
 const active = ref(false);
 
@@ -80,36 +82,43 @@ const active = ref(false);
 const maxSelection = 4;
 const selectTime = ref([]); 
 
+
 const actTimeList = ref([
   { 
     text: '평일 오전', 
     time: '09:00 - 12:00', 
-    tag: 'weekday_morning' 
+    tag: 'weekday_morning',
+    recm: false
   },
   { 
     text: '평일 오후', 
     time: '12:00 - 18:00', 
-    tag: 'weekday_afternoon' 
+    tag: 'weekday_afternoon',
+    recm: false
   },
   { 
     text: '평일 저녁', 
     time: '18:00 - 22:00', 
-    tag: 'weekday_evening' 
+    tag: 'weekday_evening',
+    recm: true
   },
   { 
     text: '주말 오전', 
     time: '09:00 - 12:00', 
-    tag: 'weekend_morning' 
+    tag: 'weekend_morning',
+    recm: true
   },
   { 
     text: '주말 오후', 
     time: '12:00 - 18:00', 
-    tag: 'weekend_afternoon' 
+    tag: 'weekend_afternoon',
+    recm: true
   },
   { 
     text: '주말 저녁', 
     time: '18:00 - 22:00', 
-    tag: 'weekend_evening' 
+    tag: 'weekend_evening',
+    recm: false
   },
 ]);
 
@@ -168,47 +177,52 @@ function isButtonDisabled(keywordTag) {
 
 <style scoped>
 .info-chips {
-  min-height: 32px; 
-  padding-left: 12px;
-  padding-right: 12px;
+  width: 100%;
+  min-height: 36px; 
   border-radius: 16px;
-  border: 1.35px solid #E5E7EB;
-  background-color: #F9FAFB;
-  color: #6B7280;
+  border: 0.7px solid #FFB89D;
+  background-color: #FFF5F0;
+  color: #FF6129;
   font-size: 12px;
   font-weight: 400;
 }
 
 .time-btn {
-  padding-left: 16px !important; 
-  padding-right: 16px !important;
-  
   min-height: 56px; 
   border-radius: 16px;
   border: 1.35px solid #E5E7EB;
   background-color: #FFFFFF;
   color: #364153;
   
-  text-transform: none !important;
+  justify-content: space-between;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .selected-btn {
-  background-color: #FFF5F2 !important;
-  border: 1.35px solid #FF6129 !important;
+  background-color: #FFFFFF;
+  border: 1.35px solid #FF6129;
 }
 
 .radio-icon {
-    margin-right: 12px; 
-    font-size: 20px; 
+  margin-right: 8px; 
 }
 
-.btn-text, .btn-time {
+.btn-text {
   font-size: 14px;
   font-weight: 400;
+  letter-spacing: -0.15px;
   color: #364153;
 }
 
-.selected-btn .selected-text {
-  color: #FF6129;
+.btn-time {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.15px;
+  color: #6A7282;
 }
+
+/* .selected-btn .selected-text {
+  color: #FF6129;
+} */
 </style>
