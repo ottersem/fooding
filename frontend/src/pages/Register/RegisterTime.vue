@@ -18,22 +18,38 @@
 
       <v-row no-gutters class="justify-start | mt-6">
         <v-col 
-          v-for="(actTime, index) in actTimeList"
-          :key="index"
-          cols="12"   class="pa-1" 
+          v-for="(actTime, index) in actTimeList" :key="index"
+          cols="12" class="mt-2"
         >
-          <v-chip
+          <v-btn
             @click="toggleKeyword(actTime.tag)"
-            variant="outlined"
-            :class="{ 'selected-actTime': selectTime.includes(actTime.tag) }"
-            :disabled="isChipDisabled(actTime.tag)" 
-            :style="{ 
-              width: '100%', height: '100%', justifyContent: 'start',
-              opacity: isChipDisabled(actTime.tag) && !selectTime.includes(actTime.tag) ? 0.4 : 1,
-            }"
+            variant="outlined" rounded="lg" block
+            :class="{ 'selected-btn': selectTime.includes(actTime.tag) }"
+            :disabled="isButtonDisabled(actTime.tag)"
+            class="time-btn"
           >
-            {{ actTime.text }} 
-          </v-chip>
+            <template v-slot:prepend>
+              <v-icon
+                class="radio-icon"
+                :color="selectTime.includes(actTime.tag) ? '#FF6129' : '#9CA3AF'"
+              >
+                {{ selectTime.includes(actTime.tag) ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank' }}
+              </v-icon>
+              <span class="btn-text" :class="{ 'selected-text': selectTime.includes(actTime.tag) }" style="text-align: left;">{{ actTime.text }}</span>
+            </template>
+
+            <template v-slot:append>
+              <span class="btn-time" :class="{ 'selected-text': selectTime.includes(actTime.tag) }" style="text-align: right;">{{ actTime.time }}</span>
+              <v-icon
+                class="trailing-icon"
+                color="#9CA3AF"
+                size="20"
+              >
+                mdi-chevron-right
+              </v-icon>
+            </template>
+          </v-btn>
+          
         </v-col>
       </v-row>
     </v-container>
@@ -50,25 +66,52 @@ import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RegisterHeader from "@/components/RegisterHeader.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
+
 const router = useRouter(); 
 
 const emit = defineEmits(['hide-top-appbar']);
 
 const title = "활동 가능한 시간대는?";
-const desc = "여러 개를 선택할 수 있어요 (3/4개 선택)";
+const desc = "여러 개를 선택할 수 있어요 (3/4개 선택)"; 
 
 const active = ref(false);
 
+// 다중 선택을 위한 배열과 최대 개수 원본 복원
 const maxSelection = 4;
-const selectTime = ref([]);
-const actTimeList = ref([
-  { text: '☕️ 일상/친목', tag: 'daily_social' },
-  { text: '🏆 대외활동/공모전', tag: 'activities_contest' },
-  { text: '💼 커리어', tag: 'career_job' },
-  { text: '📚 스터디', tag: 'study_group' },
-  { text: '🎨 취미/여가', tag: 'hobby_leisure' },
-]);
+const selectTime = ref([]); 
 
+const actTimeList = ref([
+  { 
+    text: '평일 오전', 
+    time: '09:00 - 12:00', 
+    tag: 'weekday_morning' 
+  },
+  { 
+    text: '평일 오후', 
+    time: '12:00 - 18:00', 
+    tag: 'weekday_afternoon' 
+  },
+  { 
+    text: '평일 저녁', 
+    time: '18:00 - 22:00', 
+    tag: 'weekday_evening' 
+  },
+  { 
+    text: '주말 오전', 
+    time: '09:00 - 12:00', 
+    tag: 'weekend_morning' 
+  },
+  { 
+    text: '주말 오후', 
+    time: '12:00 - 18:00', 
+    tag: 'weekend_afternoon' 
+  },
+  { 
+    text: '주말 저녁', 
+    time: '18:00 - 22:00', 
+    tag: 'weekend_evening' 
+  },
+]);
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -76,22 +119,25 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-
+  // 필요한 경우 unmounted 시 로직 추가
 });
 
-watch(selectTime, (newKeywords) => {
-  active.value = newKeywords.length > 0;
+watch(selectTime, (newTimes) => {
+  active.value = newTimes.length > 0;
 }, { deep: true });
 
 // ----- 함수 정의 ----- //
 function handleClickBtn(action) {
   switch (action) {
     case 'goToBack':
-      navigateTo(router, '/register/basic');
+      navigateTo(router, '/register/keyword');
       break;
 
     case 'goToNext':
-      navigateTo(router, '/register/time');
+      if (active.value) {
+        console.log('선택된 시간대:', selectTime.value);
+        navigateTo(router, '/register/desc');
+      }
       break;
 
     default:
@@ -99,43 +145,70 @@ function handleClickBtn(action) {
   }
 }
 
+// 다중 선택 토글 로직
 function toggleKeyword(keywordTag) {
     const index = selectTime.value.indexOf(keywordTag);
     
     if (index === -1) {
-        // 선택되지 않은 키워드일 경우
         if (selectTime.value.length < maxSelection) {
             selectTime.value.push(keywordTag);
         }
     } else {
-        // 이미 선택된 키워드일 경우 제거
         selectTime.value.splice(index, 1);
     }
 
     console.log(selectTime.value);
 }
 
-function isChipDisabled(keywordTag) {
+// 버튼 비활성화 로직
+function isButtonDisabled(keywordTag) {
   return selectTime.value.length >= maxSelection && !selectTime.value.includes(keywordTag);
 }
-
-</script> 
+</script>
 
 <style scoped>
-.v-chip {
+.info-chips {
+  min-height: 32px; 
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 16px;
+  border: 1.35px solid #E5E7EB;
+  background-color: #F9FAFB;
+  color: #6B7280;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.time-btn {
+  padding-left: 16px !important; 
+  padding-right: 16px !important;
+  
   min-height: 56px; 
-  padding-left: 16px;
-  padding-right: 16px;
   border-radius: 16px;
   border: 1.35px solid #E5E7EB;
   background-color: #FFFFFF;
   color: #364153;
-  font-size: 14px;
-  font-weight: 400;
+  
+  text-transform: none !important;
 }
 
-.selected-actTime {
-  background-color: #FFF5F2;
-  border: 1.35px solid #FF6129;
+.selected-btn {
+  background-color: #FFF5F2 !important;
+  border: 1.35px solid #FF6129 !important;
+}
+
+.radio-icon {
+    margin-right: 12px; 
+    font-size: 20px; 
+}
+
+.btn-text, .btn-time {
+  font-size: 14px;
+  font-weight: 400;
+  color: #364153;
+}
+
+.selected-btn .selected-text {
+  color: #FF6129;
 }
 </style>
