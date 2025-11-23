@@ -19,6 +19,7 @@ import IconLocation from '@/assets/icons/location-icon.svg?component'
 import IconPeople from '@/assets/icons/people-icon.svg?component'
 import IconShineFill from '@/assets/icons/shine-icon-fill.svg?component'
 import IconShineLine from '@/assets/icons/shine-icon-line.svg?component'
+import IconComplete from '@/assets/icons/complete-icon.svg?component'
 
 const customAliases = {
   ...aliases,
@@ -29,6 +30,7 @@ const customAliases = {
   'cus-people': IconPeople,
   'cus-shine-fill': IconShineFill,
   'cus-shine-line': IconShineLine,
+  'cus-complete-icon': IconComplete,
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

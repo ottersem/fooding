@@ -39,29 +39,34 @@
   </v-app>
 
   <!-- 다이얼로그 -->
-  <v-dialog v-model="dialog.dialogActive" width="auto">
-    <v-card class="pa-2 | pb-3" rounded="lg">
-      <v-card-title class="text-title | pl-4 | pr-4 | pt-4">
-        <v-row style="justify-content: start; align-items: center;">
-          <v-col class="pt-0 | pb-0 | pl-4 | pr-1" cols="auto">
-            <v-img
-              src="@/assets/logo.png"
-              height="24"
-              width="24"
-              class=""
-            ></v-img>
-          </v-col>
-          <v-col class="pl-1" cols="auto">
-            {{ dialog.title }}
-          </v-col>
+  <v-dialog v-model="dialog.dialogActive" width="100%">
+    <v-card style="padding: 24px 16px; border-radius: 24px;">
+      <v-btn 
+        icon="mdi-close" variant="text" size="small"
+        v-if="!dialog.isOneBtn"
+        @click="dialog.dialogActive = false"
+        style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
+      />
+
+      <v-card-title>
+        <v-row no-gutters class="align-center | justify-center">
+          <v-icon size="64" color="#FF6129" icon="$cus-complete-icon"/>
+        </v-row>
+        <v-row no-gutters class="align-center | justify-center | mt-3"
+          style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
+        >
+          {{ dialog.title }}
         </v-row>
       </v-card-title>
-      <v-card-text class="text-subtitle | pl-4 | pr-4 | pt-2 | pb-3" v-html="dialog.text"></v-card-text>
+
+      <v-card-text style="padding: 0px; margin-bottom: 12px;">
+        <v-row no-gutters
+        style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
+        v-html="dialog.text"/>
+      </v-card-text>
+
       <template v-slot:actions>
-          <v-row no-gutters justify="end">
-              <v-btn color="#FF5858" width="25%" rounded="xl" variant="outlined" @click="dialog.dialogActive = false">취소</v-btn>
-              <v-btn color="#FF5858" width="25%" rounded="xl" variant="flat" class="ml-2" @click="dialog.okButton" :loading="isSubmitting">확인</v-btn>
-          </v-row>
+          <v-btn class="active-btn" style="border-radius: 16px;" variant="outlined" @click="dialog.okButton" :loading="isSubmitting">{{ dialog.okText }}</v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -72,12 +77,12 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-import axios from "axios";
-
 const dialog = ref({
   title: '',
   text: '',
   isActive: false,
+  isOneBtn: false,
+  okText: '확인',
   okButton() {}
 });
 
@@ -85,7 +90,6 @@ const dialog = ref({
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   console.log(import.meta.env)
-
 });
 
 onUnmounted(() => {
@@ -109,81 +113,17 @@ function emitHideAppbar() {
   sFooter.value = false;
 };
 
-function openDialog(title, text, onConfirm) {
+function openDialog(title, text, onConfirm, isOneBtn, okText) {
   dialog.value.title = title;
   dialog.value.text = text;
   dialog.value.okButton = onConfirm;
   dialog.value.dialogActive = true;
+  dialog.value.isOneBtn = isOneBtn || false;
+  dialog.value.okText = okText || '확인';
 }
 
 </script>
 
 <style scoped>
-
-.margin-top-16 {
-  margin-top: 16px;
-}
-
-.padding-32 {
-  padding: 32px;
-}
-
-.padding-top-56 {
-  padding-top: 56px;
-}
-
-.padding-bottom-16 {
-  padding-bottom: 16px;
-}
-
-.progress-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px; /* 원 사이 간격 */
-}
-
-.circle {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #B1B1B1; /* 기본 배경색 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.circle.active {
-  background-color: #ff5858; /* 현재 단계 배경색 */
-}
-
-.line {
-  position: absolute;
-  width: 17px;
-  height: 0.6px;
-  background-color: #B1B1B1;
-  top: 50%;
-  left: 100%;
-  transform: translateY(-50%);
-}
-
-.text-title {
-    font-size: 19.5px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.5px;
-}
-
-.text-subtitle {
-    font-size: 15x;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    letter-spacing: -0.4px;
-    color: #404040;
-}
-
 
 </style>
