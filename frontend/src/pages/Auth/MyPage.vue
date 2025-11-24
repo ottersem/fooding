@@ -1,5 +1,5 @@
 <template>
-
+mypage
 </template>
 
 <script setup>

@@ -1,38 +1,36 @@
 <template>
   <v-app class="background">
-    <v-app-bar app color="#FFFFFF" flat height="100" v-if="sAppBar">
-      <v-row class="align-center | justify-space-between | padding-32 | padding-top-56 | padding-bottom-16">
-        <!-- 로고 -->
-        <v-col cols="auto">
-          <v-row class="align-center | pl-3">
-            <v-img 
-            src="@/assets/logo.svg"
-            :width="84" :height="30"
-            min-width="84px" min-height="30px" 
-            ></v-img>
-          </v-row>
+    <v-app-bar 
+      app color="#FFFFFF" flat
+      v-if="showTopNav"
+    >
+      <v-row no-gutters class="justify-space-between | align-center | header-container">
+        <v-col cols="auto" class="pl-2">
+            <v-btn
+              icon="mdi-chevron-left" 
+              variant="text" density="comfortable"
+              @click="handleClickBtn('goToBack')"
+            ></v-btn>
         </v-col>
-        <v-col cols="8">
-          <v-row v-if="sHeader" class="align-center | justify-end | pr-2">
-            <v-col cols="auto" class="progress-bar">
-                <div
-                v-for="(step, index) in 7"
-                :key="index"
-                class="circle"
-                :class="{ active: index === pageIndex }"
-                >
-                <div class="line" v-if="index !== 6"></div>
-                </div>
-            </v-col>
-          </v-row>
+
+        <v-col cols="auto" class="nav-text">
+          {{ 'asdf' }}
         </v-col>
-        <v-divider class="margin-top-16" />
+
+        <v-col cols="auto" class="nav-icon | pr-2">
+            <v-btn
+              icon="$cus-profile-icon" 
+              variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
+              @click="handleClickBtn('goToMypage')"
+            ></v-btn>
+        </v-col>
+
       </v-row>
     </v-app-bar>
 
     <v-main>
       <router-view
-        @hide-appbar="emitHideAppbar"
+        @hide-top-appbar="hideTopNav"
       ></router-view>
     </v-main>
 
@@ -76,6 +74,14 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { navigateTo } from '@/common/RouterUtil.js';
+
+// 라우터 인스턴스 가져오기
+const router = useRouter();
+const route = useRoute(); // (추가) 현재 라우트 정보 가져오기
+
+// 네비게이션 표시 상태
+const showTopNav = ref(true);
 
 const dialog = ref({
   title: '',
@@ -96,6 +102,12 @@ onUnmounted(() => {
 
 });
 
+watch(
+  () => route.path, // 현재 경로(path)를 감시합니다.
+  (newPath, oldPath) => {
+    showTopNav.value = true;
+  }
+);
 
 // ----- 함수 정의 ----- //
 function initSurvey() {
@@ -108,10 +120,26 @@ function initSurvey() {
   console.log("set localStorage userSurvey:", localStorage.getItem('userSurvey'))
 }
 
-function emitHideAppbar() {
-  console.log('Event Received: hide appbar');
-  sFooter.value = false;
-};
+// 상단 앱 바 숨기기
+function hideTopNav() {
+  showTopNav.value = false;
+}
+
+// 버튼 클릭 이벤트 핸들러
+function handleClickBtn(action) {
+  switch (action) {
+    case 'goToMypage':
+      navigateTo(router, '/myPage');
+      break;
+
+    case 'goToBack':
+      navigateTo(router, '/');
+      break;
+
+    default:
+      console.error('알 수 없는 인증 액션 타입:', action);
+  }
+}
 
 function openDialog(title, text, onConfirm, isOneBtn, okText) {
   dialog.value.title = title;

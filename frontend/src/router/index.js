@@ -14,7 +14,7 @@ import { defineAsyncComponent } from "vue";
 const routes = [
   {
     path: '/',
-    redirect: '/home' // Redirect root path to dashboard
+    redirect: '/group' // Redirect root path to dashboard
   },
   {
     path: '/home',
@@ -37,14 +37,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "user-profile" */ "@/pages/Auth/UserProfile.vue")
   },
   {
-    path: '/group-detail',
-    name: 'GroupDetail',
-    component: () => import(/* webpackChunkName: "group-detail" */ "@/pages/Group/GroupDetail.vue")
-  },
-  {
-    path: '/group-list',
+    path: '/group',
     name: 'GroupList',
     component: () => import(/* webpackChunkName: "group-list" */ "@/pages/Group/GroupList.vue")
+  },
+  {
+    path: '/group/detail',
+    name: 'GroupDetail',
+    component: () => import(/* webpackChunkName: "group-detail" */ "@/pages/Group/GroupDetail.vue")
   },
   {
     path: '/register',
