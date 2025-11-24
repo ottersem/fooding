@@ -11,11 +11,13 @@
         학과
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
-        <v-text-field
-          v-model="Username"
+        <v-combobox
+          v-model="major"
+          :items="majorOptions"
           placeholder="예술공학과" 
           class="inputbox"
           variant="outlined" density="comfortable" rounded="lg" bg-color="#FFFFFF" base-color="#E5E8EB" color="#E5E8EB"
+          clearable
         />
       </v-row>
 
@@ -26,7 +28,7 @@
         <v-select
           v-model="grade"
           :items="gradeOptions"
-          placeholder="예술공학과" 
+          placeholder="학년" 
           class="inputbox"
           variant="outlined" density="comfortable" rounded="lg" bg-color="#FFFFFF" base-color="#E5E8EB" color="#E5E8EB"
         />
@@ -58,6 +60,12 @@ const desc = "학과와 학년 정보를 알려주세요";
 
 const active = ref(false);
 
+const major = ref(null);
+const majorOptions = ref([
+    '예술공학과',
+    '소프트웨어학부',
+]);
+
 const grade = ref(null);
 const gradeOptions = ref([
   '1학년',
@@ -75,6 +83,14 @@ onMounted(() => {
 onUnmounted(() => {
 
 });
+
+watch([major, grade], ([newMajor, newGrade]) => {
+  const isMajorValid = newMajor !== null && newMajor !== '';
+  const isGradeValid = newGrade !== null && newGrade !== '';
+  
+  // 두 조건이 모두 true일 때만 다음 버튼 활성화
+  active.value = isMajorValid && isGradeValid;
+}, { immediate: true });
 
 // ----- 함수 정의 ----- //
 
