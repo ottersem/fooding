@@ -129,7 +129,7 @@ function hideTopNav() {
 function handleClickBtn(action) {
   switch (action) {
     case 'goToMypage':
-      navigateTo(router, '/myPage');
+      navigateTo(router, '/my-page');
       break;
 
     case 'goToBack':
