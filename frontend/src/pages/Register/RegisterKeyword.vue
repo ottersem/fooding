@@ -39,6 +39,7 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import ProgressFooter from "@/components/ProgressFooter.vue";
 import RegisterHeader from "@/components/RegisterHeader.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 

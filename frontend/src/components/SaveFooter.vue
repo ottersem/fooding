@@ -5,13 +5,13 @@
       variant="outlined"
       class="active-btn"
       @click="handleClickBtn('goToNext')"
-    >다음</v-btn>
+    >저장하기</v-btn>
     <v-btn
       v-else
       variant="outlined"
       class="readonly-btn"
       readonly
-    >다음</v-btn>
+    >저장하기</v-btn>
   </v-row>
 </template>
 
@@ -30,6 +30,7 @@ const props = defineProps({
         default: false
     }
 });
+
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
     
