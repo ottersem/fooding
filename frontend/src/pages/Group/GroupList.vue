@@ -1,10 +1,10 @@
 <template>
     <v-container class="pa-0">
-        <v-row no-gutters>
+        <v-row no-gutters class="header-box">
             <RegisterHeader :title="title" :desc="desc"/>
         </v-row>
 
-        <v-row no-gutters class="justify-center mt-4">
+        <v-row no-gutters class="justify-center | ml-4 | mr-4 | mt-6">
             <v-col 
                 v-for="(group, index) in groupList" 
                 :key="index"
@@ -12,44 +12,44 @@
                 class="mb-4"
             >
                 <v-card 
-                    class="meeting-card" 
+                    class="meeting-card | pa-5" 
                     variant="outlined"
                 >
-                    <v-row no-gutters class="pa-4 pb-0 align-center">
-                        <v-col cols="auto" class="mr-3">
-                            <v-avatar size="56" color="#E0E0E0"></v-avatar> 
+                    <v-row no-gutters class="pb-0 | align-center">
+                        <v-col cols="auto" class="mr-4">
+                            <v-avatar size="48" color="#E0E0E0"></v-avatar> 
                         </v-col>
                         <v-col>
                             <div class="card-title">{{ group.title }}</div>
-                            <v-row no-gutters class="align-center mt-1">
-                                <v-chip size="small" class="tag-chip mr-2" prepend-icon="mdi-coffee">커피챗</v-chip>
-                                <span class="category-text">커리어</span>
+                            <v-row no-gutters class="align-center | mt-1">
+                                <v-chip size="small" class="tag-chip | mr-2" prepend-icon="mdi-coffee">커피챗</v-chip>
+                                <v-col class="category-text">커리어</v-col>
                             </v-row>
                         </v-col>
                         <v-col cols="auto">
                             <div class="people-count">
-                                <v-icon size="20" class="mr-1">mdi-account-group</v-icon>
+                                <v-icon size="20" class="mr-1" icon="$cus-people"/>
                                 <span>2/4</span>
                             </div>
                         </v-col>
                     </v-row>
 
-                    <v-card-text class="pt-2 pb-4 description-text">
+                    <v-card-text class="pa-0 | mt-4 | mb-4 | description-text">
                         {{ group.description }}
                     </v-card-text>
 
-                    <v-row no-gutters class="px-4 pb-4 info-section">
-                        <v-col cols="auto" class="mr-4 align-center d-flex">
-                            <v-icon size="18" class="mr-1">mdi-clock-time-four-outline</v-icon>
+                    <v-row no-gutters class="info-section">
+                        <v-col cols="auto" class="mr-4 | align-center | d-flex">
+                            <v-icon color="#6A7282" size="18" class="mr-1">mdi-clock-time-four-outline</v-icon>
                             <span>{{ group.meetingTime }}</span>
                         </v-col>
-                        <v-col cols="auto" class="align-center d-flex">
-                            <v-icon size="18" class="mr-1">mdi-map-marker-outline</v-icon>
+                        <v-col cols="auto" class="align-center | d-flex">
+                            <v-icon color="#6A7282" size="18" class="mr-1">mdi-map-marker-outline</v-icon>
                             <span>{{ group.meetingLocation }}</span>
                         </v-col>
                     </v-row>
 
-                    <v-card-actions class="pa-4 pt-0">
+                    <v-card-actions class="pa-0 | mt-4">
                         <v-btn 
                             v-if="group.status === 'PENDING'"
                             block 
@@ -141,8 +141,19 @@ function handleAction(actionType, currentStatus) {
 </script> 
 
 <style scoped>
+.header-box {
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #FFFFFF;
+}
+
 .meeting-card {
+    box-shadow: 
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
     border-radius: 12px;
+    border: 0.67px solid #F3F4F6;
+    background-color: #FFFFFF;
 }
 
 .card-title {
@@ -152,27 +163,28 @@ function handleAction(actionType, currentStatus) {
 }
 
 .tag-chip {
-    background-color: #E6F3FF;
-    color: #1A73E8;
+    background-color: #F0F5FF;
+    color: #3B82F6;
     font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .category-text {
     font-size: 12px;
-    color: #6A7282;
+    color: #8B95A1;
 }
 
 .people-count {
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #364153;
+    color: #6A7282;
 }
 
 .description-text {
     font-size: 14px;
     color: #4A5565;
-    line-height: 1.4;
 }
 
 .info-section span {
@@ -181,22 +193,35 @@ function handleAction(actionType, currentStatus) {
 }
 
 .apply-button {
-    text-transform: none; 
     font-weight: 600;
-    min-height: 48px;
-    border-radius: 8px;
-    background-color: #FF6129;
-    color: #FFFFFF;
+    font-size: 13px;
+    letter-spacing: -0.08px;
+    min-height: 40px;
+    border-radius: 12px;
+    border: 0.67px solid #E5E7EB;
+    background-color: #FFFFFF;
+    color: #191F28;
 }
 
 .cancel-button {
-    background-color: #F4F6F9;
-    color: #6A7282;
-    border: 1px solid #E5E7EB;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: -0.08px;
+    min-height: 40px;
+    border-radius: 12px;
+    border: 0.67px solid #E5E7EB;
+    background-color: #FFFFFF;
+    color: #191F28;
 }
 
 .accepted-button {
-    background-color: #F4F6F9;
-    color: #6A7282;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: -0.08px;
+    min-height: 40px;
+    border-radius: 12px;
+    border: 0.67px solid #FF6129;
+    background-color: #FFF5F0;
+    color: #FF6129;
 }
 </style>
