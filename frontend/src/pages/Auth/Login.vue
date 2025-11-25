@@ -12,7 +12,7 @@
     </v-row>
     <v-row no-gutters class="justify-center | mt-1">
       <v-text-field
-        v-model="Username"
+        v-model="userEmail"
         placeholder="email@cau.ac.kr" 
         class="inputbox"
         variant="outlined" density="comfortable" rounded="lg" bg-color="#F9FAFB" base-color="#E5E8EB" color="#E5E8EB"
@@ -23,7 +23,7 @@
     </v-row>
     <v-row no-gutters class="justify-center | mt-1">
       <v-text-field
-        v-model="password"
+        v-model="userPassword"
         placeholder="password"
         :type="showPassword ? 'text' : 'password'"
         :append-inner-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
@@ -57,13 +57,17 @@
 
     <v-row no-gutters class="justify-center | mt-4 | mb-4">
       <v-btn
+        @click="handleClickBtn('login')"
         variant="outlined"
         class="active-btn"
+        :disabled="!active"
+        v-if="active"
       >로그인</v-btn>
       <v-btn
         variant="outlined"
         class="readonly-btn"
         readonly
+        v-else
       >로그인</v-btn>
     </v-row>
 
@@ -96,12 +100,20 @@ import { navigateTo } from '@/common/RouterUtil.js';
 const emit = defineEmits(['hide-top-appbar']);
 const router = useRouter(); 
 
-// v-model 변수 선언
-const username = ref('');
-const email = ref('');
-const password = ref('');
-// 비밀번호 보이기/가리기 상태 변수
+const userEmail = ref('');
+const userPassword = ref('');
+
 const showPassword = ref(false);
+const active = ref(false);
+
+watch([userEmail, userPassword], ([newUserEmail, newUserPassword]) => {
+  // 두 항목 모두 null, undefined, 또는 빈 문자열이 아닐 때만 true
+  const isEmailValid = !!newUserEmail && newUserEmail.trim() !== '';
+  const isPasswordValid = !!newUserPassword && newUserPassword.trim() !== '';
+  
+  active.value = isEmailValid && isPasswordValid;
+}, { immediate: true });
+
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -117,6 +129,7 @@ onUnmounted(() => {
 function handleClickBtn(action) {
   switch (action) {
     case 'findIdPw':
+      // 아이디/비밀번호 찾기 로직 추가
       break;
 
     case 'goToRegister':
@@ -124,16 +137,17 @@ function handleClickBtn(action) {
       break;
 
     case 'login':
-      console.log('로그인 버튼 클릭. 이메일:', email.value, '비밀번호:', password.value);
-      // 로그인 처리 로직
-      // 예: loginUser(email.value, password.value);
+      if (active.value) {
+        console.log('로그인 버튼 클릭. 이메일:', userEmail.value, '비밀번호:', userPassword.value);
+        // 로그인 처리 로직
+      }
       break;
     default:
       console.error('알 수 없는 인증 액션 타입:', action);
   }
 }
 
-</script> 
+</script>
 
 <style scoped>
 .align-item-center {
