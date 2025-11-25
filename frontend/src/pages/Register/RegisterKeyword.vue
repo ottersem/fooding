@@ -13,14 +13,18 @@
           :key="index"
           cols="6"   class="pa-1" 
         >
-            <v-btn
-                class="keyword-btn"
-                variant="outlined" rounded="lg" block
-                :class="{ 'selected-keyword': keywords.includes(keyword.tag) }"
-                @click="toggleKeyword(keyword.tag)"
-            >
-                {{ keyword.text }} 
-            </v-btn>
+          <v-chip
+            @click="toggleKeyword(keyword.tag)"
+            variant="outlined"
+            :class="{ 'selected-keyword': keywords.includes(keyword.tag) }"
+            :disabled="isChipDisabled(keyword.tag)" 
+            :style="{ 
+              width: '100%', height: '100%', justifyContent: 'start',
+              opacity: isChipDisabled(keyword.tag) && !keywords.includes(keyword.tag) ? 0.4 : 1,
+            }"
+          >
+            {{ keyword.text }} 
+          </v-chip>
         </v-col>
       </v-row>
     </v-container>
@@ -35,6 +39,7 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import ProgressFooter from "@/components/ProgressFooter.vue";
 import RegisterHeader from "@/components/RegisterHeader.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 
@@ -65,6 +70,10 @@ onMounted(() => {
 onUnmounted(() => {
 
 });
+
+watch(keywords, (newKeywords) => {
+  active.value = newKeywords.length > 0;
+}, { deep: true });
 
 // ----- 함수 정의 ----- //
 function handleClickBtn(action) {
@@ -98,8 +107,27 @@ function toggleKeyword(keywordTag) {
     console.log(keywords.value);
 }
 
+function isChipDisabled(keywordTag) {
+  return keywords.value.length >= maxSelection && !keywords.value.includes(keywordTag);
+}
+
 </script> 
 
 <style scoped>
+.v-chip {
+  min-height: 56px; 
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 16px;
+  border: 1.35px solid #E5E7EB;
+  background-color: #FFFFFF;
+  color: #364153;
+  font-size: 14px;
+  font-weight: 400;
+}
 
+.selected-keyword {
+  background-color: #FFF5F2;
+  border: 1.35px solid #FF6129;
+}
 </style>
