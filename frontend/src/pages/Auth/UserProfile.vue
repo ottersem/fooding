@@ -1,12 +1,16 @@
 <template>
-    <v-container class="justify-center | pr-4 | pl-4 | pt-0">
+    <v-container 
+      class="justify-center | mb-12"
+      style="background-color: #FFFFFF; height: 100%;"
+    >
 
-      <v-row no-gutters class="justify-center">
-        <v-avatar size="96" image="https://placehold.co/96X96"/>
+      <v-row no-gutters class="justify-center | pt-6 | pb-8">
+        <v-avatar class="profile-img-frame" size="96" image="https://placehold.co/96X96"/>
       </v-row>
-      <v-row no-gutters class="justify-center">
+      <!-- TODO img button -->
+      <!-- <v-row no-gutters class="justify-center | pb-8">
         <v-icon icon="mdi-camera"/>
-      </v-row>
+      </v-row> -->
 
       <v-row no-gutters class="justify-start | label-text">
         이름
@@ -36,12 +40,18 @@
         한줄 소개
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
-        <v-text-field
-          v-model="userEmail"
-          placeholder="email@cau.ac.kr" 
-          class="inputbox"
+        <v-textarea
+          placeholder="예: ENTJ, 1학년인데 취업에 관심 있는 사람들과 대화 나누고 싶어요" 
+          hide-details
           variant="outlined" density="comfortable" rounded="lg" bg-color="#F9FAFB" base-color="#E5E8EB" color="#E5E8EB"
+          class="inputbox"
+          v-model="userDesc"
+          @input="handleInputChange('input')"
+          :maxlength="maxCharLength"
         />
+      </v-row>
+      <v-row no-gutters class="justify-end | label-text-small | mt-1 | mb-2">
+        {{ userDesc.length }}/{{ maxCharLength }} 
       </v-row>
 
       <v-row no-gutters class="justify-start | label-text">
@@ -89,6 +99,9 @@ const emit = defineEmits(['hide-top-appbar']);
 
 const active = ref(false);
 
+const userDesc = ref("");
+const maxCharLength = 100; // 최대 글자수 상수로 정의
+
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   // emit('hide-top-appbar');
@@ -100,6 +113,20 @@ onUnmounted(() => {
 
 
 // ----- 함수 정의 ----- //
+function handleInputChange(action) {
+  switch (action) {
+    case 'input':
+      const length = userDesc.value?.length ?? 0;
+
+      if (length > maxCharLength) {
+          userDesc.value = userDesc.value.slice(0, maxCharLength);
+      }
+      
+      active.value = userDesc.value.length > 0 && userDesc.value.length <= maxCharLength;
+      break;
+  }
+}
+
 function handleClickBtn(action) {
   switch (action) {
     case 'goToProfile':
@@ -130,4 +157,41 @@ function handleClickBtn(action) {
   padding-left: 16px;
   padding-right: 16px;
 }
+
+.inputbox :deep(.v-input__details) {
+  padding-top: 4px !important;
+}
+.inputbox :deep(.v-icon) {
+  color: #8B95A1 !important;
+  opacity: 1;
+}
+
+.label-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #364153;
+}
+
+.label-text-small {
+  font-size: 12px;
+  font-weight: 400;
+  color: #364153;
+}
+
+.profile-img-frame {
+  border: 1.35px solid #E5E7EB;
+}
+/* 
+.img-btn {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  background-color: #FF6129;
+  border: 0px;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+} */
 </style>
