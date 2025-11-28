@@ -1,17 +1,19 @@
 <template>
-    <v-container class="justify-center | pr-4 | pl-4 | pt-0">
+    <v-container class="orange-card | justify-center">
 
       <v-row no-gutters class="justify-center">
         <v-avatar size="96" image="https://placehold.co/96X96"/>
       </v-row>
       <v-row no-gutters class="justify-center">
-        <v-chip>{{ userName }}</v-chip>
+        <v-chip class="profile-chip | mt-4 | mb-12">{{ userName }}</v-chip>
       </v-row>
+    </v-container>
 
+    <v-container class="menu-container | justify-center | pr-4 | pl-4 | pt-0">
       <v-row no-gutters class="justify-start">
         <v-btn
           @click="handleClickBtn('goToProfile')"
-          variant="outlined" class="menu-btn" block
+          variant="outlined" class="menu-btn | border-radius-top" block
         >
           <template v-slot:prepend>
             <v-icon color="#364153" size="large" icon="$cus-profile-icon" class="ml-1"/>
@@ -22,6 +24,7 @@
           </template>
         </v-btn>
       </v-row>
+
       <v-row no-gutters class="justify-start">
         <v-btn
           @click="handleClickBtn('goToReview')"
@@ -36,10 +39,11 @@
           </template>
         </v-btn>
       </v-row>
+
       <v-row no-gutters class="justify-start">
         <v-btn
           @click="handleClickBtn('logout')"
-          variant="outlined" class="menu-btn" block
+          variant="outlined" class="menu-btn | red-text | border-radius-bottom" block
         >
           <template v-slot:prepend>
             <v-icon color="#FB2C36" size="large" icon="$cus-logout-icon" class="ml-1"/>
@@ -64,7 +68,7 @@ const router = useRouter();
 
 const emit = defineEmits(['hide-top-appbar']);
 
-const userName = ref("asdf")
+const userName = ref("고예경")
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -97,6 +101,28 @@ function handleClickBtn(action) {
 </script>
 
 <style scoped>
+.orange-card {
+  background-color: #FF875C;
+  position: relative;
+  align-content: center;
+  height: 280px;
+}
+
+.profile-chip {
+  color: #FFFFFF;
+  background-color: #171F1D;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-size: 13px;
+}
+
+.menu-container {
+  margin-top: -56px;
+
+  position: relative;
+  z-index: 10;
+}
+
 .menu-btn {
   min-height: 56px; 
   border: 0.7px solid #F3F4F6;
@@ -106,5 +132,27 @@ function handleClickBtn(action) {
   justify-content: space-between;
   padding-left: 16px;
   padding-right: 16px;
+
+  font-size: 15px;
+  letter-spacing: -0.2px;
+
+  overflow: hidden;
 }
+
+.border-radius-top {
+  border-radius: 16px 16px 0px 0px;
+}
+
+.border-radius-bottom {
+  border-radius: 0px 0px 16px 16px;
+}
+
+.red-text {
+  color: #FB2C36;
+}
+
+.btn-top-radius {
+  border-radius: 16px 16px 0px 0px;
+}
+
 </style>
