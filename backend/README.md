@@ -199,3 +199,186 @@ app.add_middleware(
       ↓
 [6] backend: X-User-Id 로 인증 및 권한 체크
 ```
+
+## Database
+
+### 테이블 목록
+
+```
+users
+
+interests
+
+time_slots
+
+user_profiles
+
+user_interests
+
+user_time_slots
+
+groups
+
+group_members
+
+reviews
+```
+
+### users – 사용자 기본 정보
+
+| 컬럼명         | 타입          | 제약 조건                     | 설명                 |
+| ----------- | ----------- | ------------------------- | ------------------ |
+| `id`        | INT         | PK, AUTO INCREMENT, INDEX | 사용자 고유 ID          |
+| `username`  | VARCHAR(10) | NOT NULL, UNIQUE          | 닉네임 (10자 제한)       |
+| `email`     | VARCHAR(30) | NOT NULL, UNIQUE          | 이메일                |
+| `password`  | VARCHAR(30) | NOT NULL                  | 비밀번호 (평문 저장 – 과제용) |
+| `is_active` | BOOLEAN     | NOT NULL, DEFAULT TRUE    | 활성화 여부             |
+
+관계
+
+1 : 1 → user_profiles.user_id
+
+1 : N → user_interests.user_id
+
+1 : N → user_time_slots.user_id
+
+1 : N → groups.creator_id
+
+1 : N → group_members.user_id
+
+1 : N → reviews.reviewer_id, reviews.review_ed_id (받은/쓴 리뷰)
+
+### interests – 관심사 마스터
+
+| 컬럼명    | 타입          | 제약 조건                     | 설명     |
+| ------ | ----------- | ------------------------- | ------ |
+| `id`   | INT         | PK, AUTO INCREMENT, INDEX | 관심사 ID |
+| `name` | VARCHAR(20) | NOT NULL                  | 관심사 이름 |
+| `code` | VARCHAR(20) | NOT NULL, UNIQUE          | 관심사 코드 |
+
+관계
+
+1 : N → user_interests.interest_id
+
+1 : N → groups.interest_id
+
+### time_slots – 시간대 마스터
+
+| 컬럼명     | 타입          | 제약 조건                     | 설명         |
+| ------- | ----------- | ------------------------- | ---------- |
+| `id`    | INT         | PK, AUTO INCREMENT, INDEX | 시간대 ID     |
+| `label` | VARCHAR(50) | NOT NULL                  | 시간대 라벨(표기) |
+| `code`  | VARCHAR(50) | NOT NULL, UNIQUE          | 시간대 코드     |
+
+관계
+
+1 : N → user_time_slots.time_slot_id
+
+1 : N → groups.time_slot_id
+
+### user_profiles – 유저 프로필(전공/학년/소개글)
+
+| 컬럼명                 | 타입           | 제약 조건                     | 설명                       |
+| ------------------- | ------------ | ------------------------- | ------------------------ |
+| `id`                | INT          | PK, AUTO INCREMENT, INDEX | 프로필 ID                   |
+| `user_id`           | INT          | NOT NULL, FK → `users.id` | 연결된 유저 ID                |
+| `major`             | VARCHAR(30)  | NULL 허용                   | 전공                       |
+| `grade`             | VARCHAR(10)  | NULL 허용                   | 학년/학년 텍스트                |
+| `intro_text`        | VARCHAR(100) | NULL 허용                   | 한 줄 소개 (최대 100자)         |
+| `profile_image_url` | VARCHAR(255) | NULL 허용                   | 프로필 이미지 URL (지금은 안 써도 됨) |
+
+관계
+
+N : 1 → users.id (실제론 1:1 관계로 사용)
+
+### user_interests – 유저 ↔ 관심사 매핑 (N:M)
+
+| 컬럼명           | 타입  | 제약 조건                         | 설명     |
+| ------------- | --- | ----------------------------- | ------ |
+| `id`          | INT | PK, AUTO INCREMENT, INDEX     | 매핑 ID  |
+| `user_id`     | INT | NOT NULL, FK → `users.id`     | 유저 ID  |
+| `interest_id` | INT | NOT NULL, FK → `interests.id` | 관심사 ID |
+
+관계
+
+N : 1 → users
+
+N : 1 → interests
+
+### user_time_slots – 유저 ↔ 시간대 매핑 (N:M)
+
+| 컬럼명            | 타입  | 제약 조건                          | 설명     |
+| -------------- | --- | ------------------------------ | ------ |
+| `id`           | INT | PK, AUTO INCREMENT, INDEX      | 매핑 ID  |
+| `user_id`      | INT | NOT NULL, FK → `users.id`      | 유저 ID  |
+| `time_slot_id` | INT | NOT NULL, FK → `time_slots.id` | 시간대 ID |
+
+관계
+
+N : 1 → users
+
+N : 1 → time_slots
+
+### groups – 모임(매칭/소모임) 본체
+
+| 컬럼명                | 타입           | 제약 조건                          | 설명                                |
+| ------------------ | ------------ | ------------------------------ | --------------------------------- |
+| `id`               | INT          | PK, AUTO INCREMENT, INDEX      | 모임 ID                             |
+| `creator_id`       | INT          | NOT NULL, FK → `users.id`      | 방장 유저 ID                          |
+| `interest_id`      | INT          | NOT NULL, FK → `interests.id`  | 모임 관심사 ID                         |
+| `title`            | VARCHAR(30)  | NOT NULL                       | 모임 제목                             |
+| `description`      | VARCHAR(200) | NOT NULL                       | 모임 설명                             |
+| `meeting_date`     | DATE         | NOT NULL                       | 모임 날짜                             |
+| `time_slot_id`     | INT          | NOT NULL, FK → `time_slots.id` | 모임 시간대 ID                         |
+| `place`            | VARCHAR(50)  | NOT NULL                       | 모임 장소                             |
+| `max_participants` | INT          | NOT NULL                       | 정원                                |
+| `status`           | VARCHAR(10)  | NOT NULL                       | 상태(`RECRUITING/ONGOING/FINISHED`) |
+| `open_chat_link`   | VARCHAR(255) | NULL 허용                        | 카카오 오픈채팅 링크 등                     |
+
+
+관계
+
+N : 1 → users (creator)
+
+N : 1 → interests
+
+N : 1 → time_slots
+
+1 : N → group_members.group_id
+
+1 : N → reviews.group_id
+
+### group_members – 모임 참여자/신청자
+
+| 컬럼명        | 타입          | 제약 조건                      | 설명                                                    |
+| ---------- | ----------- | -------------------------- | ----------------------------------------------------- |
+| `id`       | INT         | PK, AUTO INCREMENT, INDEX  | 멤버 레코드 ID                                             |
+| `group_id` | INT         | NOT NULL, FK → `groups.id` | 속한 모임 ID                                              |
+| `user_id`  | INT         | NOT NULL, FK → `users.id`  | 유저 ID                                                 |
+| `role`     | VARCHAR(20) | NOT NULL                   | 역할 (`HOST` / `MEMBER`)                                |
+| `status`   | VARCHAR(20) | NOT NULL                   | 상태 (`APPLIED` / `ACCEPTED` / `REJECTED` / `CANCELED`) |
+
+관계
+
+N : 1 → groups
+
+N : 1 → users
+
+### reviews – 모임 후기
+
+| 컬럼명            | 타입           | 제약 조건                      | 설명                          |
+| -------------- | ------------ | -------------------------- | --------------------------- |
+| `id`           | INT          | PK, AUTO INCREMENT, INDEX  | 리뷰 ID                       |
+| `group_id`     | INT          | NOT NULL, FK → `groups.id` | 어느 모임에 대한 후기인지              |
+| `reviewer_id`  | INT          | NOT NULL, FK → `users.id`  | 작성자 유저 ID                   |
+| `review_ed_id` | INT          | NOT NULL, FK → `users.id`  | 대상 유저 ID (논리명: reviewed_id) |
+| `score`        | INT          | NOT NULL                   | 1~5 점수                      |
+| `comment`      | VARCHAR(100) | NOT NULL                   | 후기 내용                       |
+
+관계
+
+N : 1 → groups
+
+N : 1 → users (reviewer)
+
+N : 1 → users (reviewed)

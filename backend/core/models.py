@@ -138,10 +138,10 @@ class Review(Base):
   id = Column(Integer, primary_key=True, index=True)
   group_id = Column(Integer, ForeignKey("groups.id"), nullable=False)
   reviewer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-  reviewed_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+  review_ed_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
   comment = Column(String(100), nullable=False)
 
   group = relationship("Group", back_populates="reviews")
   reviewer = relationship("User", foreign_keys=[reviewer_id], back_populates="reviews_written")
-  reviewed = relationship("User", foreign_keys=[reviewed_id], back_populates="reviews_received")
+  reviewed = relationship("User", foreign_keys=[review_ed_id], back_populates="reviews_received")

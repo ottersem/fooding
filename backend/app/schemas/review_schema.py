@@ -16,7 +16,7 @@ class ReviewItemResponse(BaseModel):
   id: int
   group_id: int
   reviewer_id: int
-  reviewed_id: int
+  review_ed_id: int
   score: int
   comment: str
 

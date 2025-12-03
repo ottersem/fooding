@@ -54,7 +54,7 @@ def create_or_update_reviews(
       .filter(
         Review.group_id == meeting_id,
         Review.reviewer_id == reviewer_id,
-        Review.reviewed_id == item.target_user_id,
+        Review.review_ed_id == item.target_user_id,
       )
       .first()
     )
@@ -69,7 +69,7 @@ def create_or_update_reviews(
       r = Review(
         group_id=meeting_id,
         reviewer_id=reviewer_id,
-        reviewed_id=item.target_user_id,
+        review_ed_id=item.target_user_id,
         score=rating,
         comment=item.comment,
       )
@@ -82,7 +82,7 @@ def create_or_update_reviews(
         id=r.id,
         group_id=r.group_id,
         reviewer_id=r.reviewer_id,
-        reviewed_id=r.reviewed_id,
+        review_ed_id=r.review_ed_id,
         score=r.score,
         comment=r.comment,
       )
@@ -102,7 +102,7 @@ def get_my_written_reviews(
       id=r.id,
       group_id=r.group_id,
       reviewer_id=r.reviewer_id,
-      reviewed_id=r.reviewed_id,
+      review_ed_id=r.review_ed_id,
       score=r.score,
       comment=r.comment,
     )

@@ -137,7 +137,7 @@ def get_review_summary(db: Session, user_id: int) -> ReviewSummaryResponse:
   # 이 유저가 받은 리뷰의 평균 점수를 계산
   avg_score = (
     db.query(func.avg(Review.score))
-    .filter(Review.reviewed_id == user_id)
+    .filter(Review.review_ed_id == user_id)
     .scalar()
   )
   if avg_score is None:
