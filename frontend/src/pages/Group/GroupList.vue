@@ -18,28 +18,48 @@
                     <v-row no-gutters class="pb-0 | align-center">
                         <v-col>
                             <v-row no-gutters class="align-center">
-                                <v-chip v-if="group.status === 0" size="small" class="status-chip-recruiting | mr-2">모집중</v-chip>
-                                <v-chip v-if="group.status === 1" size="small" class="status-chip-applied | mr-2">신청</v-chip>
-                                <v-chip v-if="group.status === 2" size="small" class="status-chip-ongoing | mr-2">진행</v-chip>
-                                <v-chip v-if="group.status === 3" size="small" class="status-chip-completed | mr-2">완료</v-chip>
+                                <v-chip 
+                                    v-if="group.status === 0" 
+                                    class="status-chip | status-chip-recruiting"
+                                    variant="flat"
+                                >
+                                    모집중
+                                </v-chip>
+                                <v-chip 
+                                    v-if="group.status === 1" 
+                                    class="status-chip | status-chip-applied"
+                                    variant="flat"
+                                >
+                                    신청
+                                </v-chip>
+                                <v-chip 
+                                    v-if="group.status === 2" 
+                                    class="status-chip | status-chip-ongoing"
+                                    variant="flat"
+                                >
+                                    진행
+                                </v-chip>
+                                <v-chip 
+                                    v-if="group.status === 3" 
+                                    class="status-chip | status-chip-completed"
+                                    variant="flat"
+                                >
+                                    완료
+                                </v-chip>
                             </v-row>
                         </v-col>
                         <v-col cols="auto">
                             <div class="people-count">
                                 <v-icon size="20" class="mr-1" icon="$cus-people"/>
-                                <span>2/4</span>
+                                <span>{{ group.currentParticipants || 0 }}/{{ group.maxParticipants }}</span>
                             </div>
                         </v-col>
                     </v-row>
 
-                    <div class="card-title | mt-3">{{ group.title }}</div>
+                    <div class="card-title | mt-2">{{ group.title }}</div>
 
-                    <!-- <v-card-text class="pa-0 | mt-4 | mb-4 | description-text">
-                        {{ group.description }}
-                    </v-card-text> -->
-
-                    <v-row no-gutters class="pa-0 | mt-4 | mb-4">
-                        <v-col cols="12" class="mb-2">
+                    <v-row no-gutters class="pa-0 | mt-3 | mb-3">
+                        <v-col cols="12" class="mb-1">
                             <v-row no-gutters class="align-center">
                                 <v-icon color="#6A7282" size="18" class="mr-1">mdi-clock-time-four-outline</v-icon>
                                 <span class="description-text">{{ group.meetingDate }}</span>
@@ -68,16 +88,14 @@
 
 <script setup>
 // ----- 선언부 ----- //
-import { onMounted, onUnmounted, ref, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(['hide-top-appbar']);
 const router = useRouter(); 
 
-
 const title = "이번주 밥약/커피챗 신청";
 const desc = "지금 선택한 관심사와 시간대에 맞춰 추천된 모임을 보여드릴게요";
-
 
 const groupList = ref([
   {
@@ -90,6 +108,7 @@ const groupList = ref([
     timeSlotId: 2,
     place: "학생식당 2층",
     maxParticipants: 4,
+    currentParticipants: 2,
     status: 0, // 모집중
   },
   {
@@ -102,6 +121,7 @@ const groupList = ref([
     timeSlotId: 3,
     place: "카페 스타벅스",
     maxParticipants: 5,
+    currentParticipants: 3,
     status: 1, // 신청
   },
   {
@@ -114,6 +134,7 @@ const groupList = ref([
     timeSlotId: 4,
     place: "카페 블루보틀",
     maxParticipants: 4,
+    currentParticipants: 4,
     status: 2, // 진행
   },
   {
@@ -126,6 +147,7 @@ const groupList = ref([
     timeSlotId: 3,
     place: "학교 도서관 3층 스터디룸",
     maxParticipants: 6,
+    currentParticipants: 5,
     status: 3, // 완료
   },
   {
@@ -138,10 +160,10 @@ const groupList = ref([
     timeSlotId: 5,
     place: "학교 체육관 헬스장",
     maxParticipants: 4,
+    currentParticipants: 1,
     status: 0, // 모집중
   },
 ]);
-
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
@@ -156,7 +178,6 @@ onUnmounted(() => {
 function handleAction(actionType, currentStatus) {
     console.log(`모임 액션 발생: ${actionType} (현재 상태: ${currentStatus})`);
 }
-
 </script> 
 
 <style scoped>
@@ -185,48 +206,38 @@ function handleAction(actionType, currentStatus) {
     background-color: #F3F4F6;
     color: #4A5565;
     font-size: 12px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 16px !important;
+    padding-right: 12px !important;
+}
+
+.status-chip {
+    height: 24px !important;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    border-radius: 4px !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .status-chip-recruiting {
-    background-color: #FEF9C2;
-    color: #A65F00;
-    font-size: 12px;
-    font-weight: 600;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 4px;
+    background-color: #FEF9C2 !important;
+    color: #A65F00 !important;
 }
 
 .status-chip-applied {
-    background-color: #E6F0FF;
-    color: #2B7FFF;
-    font-size: 12px;
-    font-weight: 600;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 4px;
+    background-color: #E6F0FF !important;
+    color: #2B7FFF !important;
 }
 
 .status-chip-completed {
-    background-color: #F3F4F6;
-    color: #4A5565;
-    font-size: 12px;
-    font-weight: 600;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 4px;
+    background-color: #F3F4F6 !important;
+    color: #4A5565 !important;
 }
 
 .status-chip-ongoing {
-    background-color: #D4F5E9;
-    color: #0D9F6E;
-    font-size: 12px;
-    font-weight: 600;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 4px;
+    background-color: #D4F5E9 !important;
+    color: #0D9F6E !important;
 }
 
 .category-text {
@@ -251,33 +262,33 @@ function handleAction(actionType, currentStatus) {
     color: #6A7282;
 }
 
-.apply-button {
-    font-weight: 600;
+.apply-chip {
+    font-weight: 400;
     font-size: 13px;
     letter-spacing: -0.08px;
-    min-height: 40px;
+    padding: 4px 8px;
     border-radius: 12px;
     border: 0.67px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
 
-.cancel-button {
-    font-weight: 600;
+.cancel-chip {
+    font-weight: 400;
     font-size: 13px;
     letter-spacing: -0.08px;
-    min-height: 40px;
+    padding: 4px 8px;
     border-radius: 12px;
     border: 0.67px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
 
-.accepted-button {
-    font-weight: 600;
+.accepted-chip {
+    font-weight: 400;
     font-size: 13px;
     letter-spacing: -0.08px;
-    min-height: 40px;
+    padding: 4px 8px;
     border-radius: 12px;
     border: 0.67px solid #FF6129;
     background-color: #FFF5F0;
