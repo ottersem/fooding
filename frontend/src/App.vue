@@ -7,11 +7,11 @@
       <v-row no-gutters class="justify-space-between | align-center | header-container">
         <!-- 로고가 있을 때 -->
         <template v-if="currentPageCfg.showLogo">
-          <v-col class="pl-4">
-            <img 
-              :src="mainLogo"
-              alt="Fooding Logo" 
-              class="main-logo"
+          <v-col cols="auto" class="pl-5 | pt-1">
+            <v-img
+              src="@/assets/title.png"
+              alt="Fooding Logo"
+              contain width="84"
             />
           </v-col>
           <v-col cols="auto" class="pr-2">
@@ -19,6 +19,7 @@
               v-if="currentPageCfg.showRightBtn"
               icon="$cus-profile" 
               variant="outlined" density="comfortable" rounded="circle"
+              class="profileIcon"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
           </v-col>
@@ -196,7 +197,7 @@ const pageList = ref([
   },
   { 
     page: 'UserReview',
-    name: '내가 쓴 후기', 
+    name: '내 후기', 
     path: '/user/review', 
     showLogo: false,
     showLeftBtn: true,
@@ -332,6 +333,7 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
 </script>
 
 <style scoped>
+
 /* 네비게이션 바 스타일 */
 .nav-center {
   display: flex;
@@ -339,16 +341,17 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
   justify-content: center;
 }
 
-.main-logo {
-  height: 28px;
-  width: auto;
-}
-
 .nav-text {
   font-size: 16px;
   font-weight: 600;
   color: #364153;
   letter-spacing: -0.2px;
+}
+
+.profileIcon {
+  background-color: #F3F4F6;
+  color: #364153;
+  border: 0px;
 }
 
 .floating-btn {
