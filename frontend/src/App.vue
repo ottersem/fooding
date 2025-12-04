@@ -5,25 +5,54 @@
       v-if="showTopNav"
     >
       <v-row no-gutters class="justify-space-between | align-center | header-container">
-        <v-col cols="auto" class="pl-2">
+        <!-- 로고가 있을 때 -->
+        <template v-if="currentPageCfg.showLogo">
+          <v-col class="pl-4">
+            <img 
+              :src="mainLogo"
+              alt="Fooding Logo" 
+              class="main-logo"
+            />
+          </v-col>
+          <v-col cols="auto" class="pr-2">
             <v-btn
+              v-if="currentPageCfg.showRightBtn"
+              icon="$cus-profile" 
+              variant="outlined" density="comfortable" rounded="circle"
+              @click="handleClickBtn('goToMypage')"
+            ></v-btn>
+          </v-col>
+        </template>
+
+        <!-- 로고가 없을 때 (타이틀 표시) -->
+        <template v-else>
+          <!-- 왼쪽 버튼 영역 -->
+          <v-col cols="auto" class="pl-2">
+            <v-btn
+              v-if="currentPageCfg.showLeftBtn"
               icon="mdi-chevron-left" 
               variant="text" density="comfortable"
               @click="handleClickBtn('goToBack')"
             ></v-btn>
-        </v-col>
+            <div v-else style="width: 40px;"></div>
+          </v-col>
 
-        <v-col cols="auto" class="nav-text">
-          {{ 'asdf' }}
-        </v-col>
+          <!-- 중앙 타이틀 -->
+          <v-col cols="auto" class="nav-center">
+            <span class="nav-text">{{ currentPageCfg.name }}</span>
+          </v-col>
 
-        <v-col cols="auto" class="nav-icon | pr-2">
+          <!-- 오른쪽 버튼 영역 -->
+          <v-col cols="auto" class="nav-icon | pr-2">
             <v-btn
+              v-if="currentPageCfg.showRightBtn"
               icon="$cus-profile" 
               variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
-        </v-col>
+            <div v-else style="width: 40px;"></div>
+          </v-col>
+        </template>
       </v-row>
     </v-app-bar>
 
@@ -49,6 +78,7 @@
         </div>
       </div>
     </v-slide-y-reverse-transition>
+
     <v-btn
       v-if="showBotNav"
       class="floating-btn"
@@ -101,9 +131,10 @@
 
 <script setup>
 // ----- 선언부 ----- //
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { navigateTo } from '@/common/RouterUtil.js';
+import mainLogo from '@/assets/main-logo.svg';
 
 // 라우터 인스턴스 가져오기
 const router = useRouter();
@@ -113,13 +144,83 @@ const route = useRoute(); // (추가) 현재 라우트 정보 가져오기
 const showTopNav = ref(true);
 const showBotNav = ref(true);
 
-// [추가] FAB 상태 및 메뉴 데이터
+// 페이지별 네비게이션 설정
+const pageList = ref([
+  { 
+    page: 'GroupList',
+    name: '홈', 
+    path: '/group', 
+    showLogo: true,
+    showLeftBtn: false,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupDetail',
+    name: '모임 상세', 
+    path: '/group/detail', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupCreate',
+    name: '모임 만들기', 
+    path: '/group/create', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'GroupUser',
+    name: '내 모임', 
+    path: '/group/user', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'UserMenu',
+    name: '마이페이지', 
+    path: '/user', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'UserProfile',
+    name: '프로필 편집', 
+    path: '/user/profile', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'UserReview',
+    name: '내가 쓴 후기', 
+    path: '/user/review', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+]);
+
+// 현재 페이지 설정 계산
+const currentPageCfg = computed(() => {
+  return pageList.value.find(page => page.path === route.path) || {
+    name: '',
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true
+  };
+});
+
+// FAB 상태 및 메뉴 데이터
 const isFabOpen = ref(false);
 const fabMenus = [
   { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
   { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
   { text: '내 후기', icon: '$cus-document', action: 'myReview' },
-  { text: '프로필', icon: '$cus-profile', action: 'profile' },
+  // { text: '프로필', icon: '$cus-profile', action: 'profile' },
 ];
 
 const dialog = ref({
@@ -231,6 +332,25 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
 </script>
 
 <style scoped>
+/* 네비게이션 바 스타일 */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-logo {
+  height: 28px;
+  width: auto;
+}
+
+.nav-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #364153;
+  letter-spacing: -0.2px;
+}
+
 .floating-btn {
   position: fixed !important;
   bottom: 24px;
