@@ -16,9 +16,9 @@
                     variant="outlined"
                 >
                     <v-row no-gutters class="pb-0 | align-center">
-                        <v-col cols="auto" class="mr-4">
+                        <!-- <v-col cols="auto" class="mr-4">
                             <v-avatar size="48" color="#E0E0E0"></v-avatar> 
-                        </v-col>
+                        </v-col> -->
                         <v-col>
                             <div class="card-title">{{ group.title }}</div>
                             <v-row no-gutters class="align-center | mt-1">
@@ -48,38 +48,6 @@
                             <span>{{ group.meetingLocation }}</span>
                         </v-col>
                     </v-row>
-
-                    <v-card-actions class="pa-0 | mt-4">
-                        <v-btn 
-                            v-if="group.status === 'PENDING'"
-                            block 
-                            class="apply-button" 
-                            flat
-                            @click="handleAction('apply', group.status)"
-                        >
-                            매칭 신청하기
-                        </v-btn>
-                        
-                        <v-btn 
-                            v-else-if="group.status === 'APPLIED'"
-                            block 
-                            class="apply-button cancel-button" 
-                            flat
-                            @click="handleAction('cancel', group.status)"
-                        >
-                            매칭 취소하기
-                        </v-btn>
-
-                        <v-btn 
-                            v-else-if="group.status === 'ACCEPTED'"
-                            block 
-                            class="apply-button accepted-button" 
-                            flat
-                            @click="handleAction('accept', group.status)"
-                        >
-                            매칭 수락완료
-                        </v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>

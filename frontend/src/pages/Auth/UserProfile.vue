@@ -95,7 +95,7 @@ import SaveFooter from "@/components/SaveFooter.vue";
 
 const router = useRouter(); 
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-bottom-appbar']);
 
 const active = ref(false);
 
@@ -104,7 +104,7 @@ const maxCharLength = 100; // 최대 글자수 상수로 정의
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
-  // emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

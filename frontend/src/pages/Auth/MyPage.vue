@@ -16,7 +16,7 @@
           variant="outlined" class="menu-btn | border-radius-top" block
         >
           <template v-slot:prepend>
-            <v-icon color="#364153" size="large" icon="$cus-profile-icon" class="ml-1"/>
+            <v-icon color="#364153" size="large" icon="$cus-profile" class="ml-1"/>
             <v-col>프로필 편집</v-col>
           </template>
           <template v-slot:append>
@@ -31,7 +31,7 @@
           variant="outlined" class="menu-btn" block
         >
           <template v-slot:prepend>
-            <v-icon color="#364153" size="large" icon="$cus-document-icon" class="ml-1"/>
+            <v-icon color="#364153" size="large" icon="$cus-document" class="ml-1"/>
             <v-col>내가 쓴 후기</v-col>
           </template>
           <template v-slot:append>
@@ -46,7 +46,7 @@
           variant="outlined" class="menu-btn | red-text | border-radius-bottom" block
         >
           <template v-slot:prepend>
-            <v-icon color="#FB2C36" size="large" icon="$cus-logout-icon" class="ml-1"/>
+            <v-icon color="#FB2C36" size="large" icon="$cus-logout" class="ml-1"/>
             <v-col>로그아웃</v-col>
           </template>
           <template v-slot:append>
@@ -66,13 +66,13 @@ import { navigateTo } from '@/common/RouterUtil.js';
 
 const router = useRouter(); 
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-bottom-appbar']);
 
 const userName = ref("고예경")
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
-  // emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

@@ -19,12 +19,11 @@
 
         <v-col cols="auto" class="nav-icon | pr-2">
             <v-btn
-              icon="$cus-profile-icon" 
+              icon="$cus-profile" 
               variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
         </v-col>
-
       </v-row>
     </v-app-bar>
 
@@ -35,6 +34,16 @@
       ></router-view>
     </v-main>
 
+    <v-btn
+      v-if="showBotNav"
+      class="floating-btn"
+      color="#FF6129"
+      elevation="4"
+      icon="mdi-plus"
+      @click="handleClickBtn('actionBtn')"
+    >
+      <v-icon color="white" size="32" icon="$cus-fooding"/>
+    </v-btn>
   </v-app>
 
   <!-- 다이얼로그 -->
@@ -161,5 +170,13 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
 </script>
 
 <style scoped>
-
+.floating-btn {
+  position: fixed !important;
+  bottom: 24px;
+  right: 24px;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  z-index: 100;
+}
 </style>
