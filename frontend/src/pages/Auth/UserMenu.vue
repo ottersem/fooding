@@ -84,11 +84,11 @@ onUnmounted(() => {
 function handleClickBtn(action) {
   switch (action) {
     case 'goToProfile':
-      navigateTo(router, '/user-profile');
+      navigateTo(router, '/user/profile');
       break;
 
     case 'goToReview':
-      // navigateTo(router, '/user-profile');
+      navigateTo(router, '/user/review');
       break;
 
     case 'logout':

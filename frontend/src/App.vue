@@ -116,8 +116,8 @@ const showBotNav = ref(true);
 // [추가] FAB 상태 및 메뉴 데이터
 const isFabOpen = ref(false);
 const fabMenus = [
-  { text: '내 모임', icon: '$cus-people', action: 'myMeeting' },
-  { text: '모임 만들기', icon: 'mdi-plus', action: 'createMeeting' },
+  { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
+  { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
   { text: '내 후기', icon: '$cus-document', action: 'myReview' },
   { text: '프로필', icon: '$cus-profile', action: 'profile' },
 ];
@@ -185,11 +185,20 @@ function handleMenuClick(action) {
   
   // 액션에 따른 라우팅 처리 예시
   switch (action) {
-    case 'createMeeting':
-      // navigateTo(router, '/meeting/create');
+    case 'create':
+      navigateTo(router, '/group/create');
       break;
+
     case 'profile':
-      navigateTo(router, '/my-page');
+      navigateTo(router, '/user');
+      break;
+
+    case 'userGroup':
+      navigateTo(router, '/group/user');
+      break;
+
+    case 'myReview':
+      navigateTo(router, '/user/review');
       break;
   }
 }
@@ -198,7 +207,7 @@ function handleMenuClick(action) {
 function handleClickBtn(action) {
   switch (action) {
     case 'goToMypage':
-      navigateTo(router, '/my-page');
+      navigateTo(router, '/user');
       break;
 
     case 'goToBack':
