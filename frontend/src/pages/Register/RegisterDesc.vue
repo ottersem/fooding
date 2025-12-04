@@ -84,7 +84,7 @@ import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 
 const active = ref(false);
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 
 const dialog = ref({
   title: '',
@@ -111,6 +111,7 @@ const recmList = ref([
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

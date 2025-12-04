@@ -31,6 +31,7 @@
     <v-main>
       <router-view
         @hide-top-appbar="hideTopNav"
+        @hide-bottom-appbar="hideBotNav"
       ></router-view>
     </v-main>
 
@@ -82,6 +83,7 @@ const route = useRoute(); // (추가) 현재 라우트 정보 가져오기
 
 // 네비게이션 표시 상태
 const showTopNav = ref(true);
+const showBotNav = ref(true);
 
 const dialog = ref({
   title: '',
@@ -106,6 +108,7 @@ watch(
   () => route.path, // 현재 경로(path)를 감시합니다.
   (newPath, oldPath) => {
     showTopNav.value = true;
+    showBotNav.value = true;
   }
 );
 
@@ -123,6 +126,11 @@ function initSurvey() {
 // 상단 앱 바 숨기기
 function hideTopNav() {
   showTopNav.value = false;
+}
+
+// 하단 앱 바 숨기기
+function hideBotNav() {
+  showBotNav.value = false;
 }
 
 // 버튼 클릭 이벤트 핸들러

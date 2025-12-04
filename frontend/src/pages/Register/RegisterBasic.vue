@@ -53,7 +53,7 @@ import ProgressFooter from "@/components/ProgressFooter.vue";
 
 const router = useRouter(); 
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 
 const title = "기본 정보를 입력해주세요";
 const desc = "학과와 학년 정보를 알려주세요";
@@ -78,6 +78,7 @@ const gradeOptions = ref([
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

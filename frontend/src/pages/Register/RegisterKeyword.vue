@@ -45,7 +45,7 @@ import RegisterHeader from "@/components/RegisterHeader.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
 
 const router = useRouter(); 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 
 // [수정 2] desc(computed)에서 참조하기 위해 데이터 변수들을 먼저 선언
 const maxSelection = 2;
@@ -71,6 +71,7 @@ const desc = computed(() => {
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {
