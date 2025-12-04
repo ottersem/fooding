@@ -12,7 +12,7 @@
                 class="mb-4"
             >
                 <v-card 
-                    class="meeting-card | pa-5" 
+                    class="meeting-card | pa-4" 
                     variant="outlined"
                     @click="handleClickBtn('goToDetail', group.id)"
                     style="cursor: pointer;"
