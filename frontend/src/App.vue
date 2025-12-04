@@ -34,15 +34,34 @@
       ></router-view>
     </v-main>
 
+      <v-slide-y-reverse-transition>
+      <div v-if="isFabOpen && showBotNav" class="fab-menu-container">
+        <div 
+          v-for="(item, index) in fabMenus" 
+          :key="index"
+          class="fab-menu-item"
+          @click="handleMenuClick(item.action)"
+        >
+          <div class="fab-icon-box">
+            <v-icon color="#FFFFFF" size="20">{{ item.icon }}</v-icon>
+          </div>
+          <span class="fab-text">{{ item.text }}</span>
+        </div>
+      </div>
+    </v-slide-y-reverse-transition>
     <v-btn
       v-if="showBotNav"
       class="floating-btn"
       color="#FF6129"
       elevation="4"
       icon="mdi-plus"
-      @click="handleClickBtn('actionBtn')"
+      @click="toggleFab"
     >
-      <v-icon color="white" size="32" icon="$cus-fooding"/>
+      <v-icon 
+        color="#FFFFFF" size="32" 
+        :icon="isFabOpen ? 'mdi-close' : '$cus-fooding'"
+        :style="{ transform: isFabOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: '0.3s' }"
+      />
     </v-btn>
   </v-app>
 
@@ -94,6 +113,15 @@ const route = useRoute(); // (추가) 현재 라우트 정보 가져오기
 const showTopNav = ref(true);
 const showBotNav = ref(true);
 
+// [추가] FAB 상태 및 메뉴 데이터
+const isFabOpen = ref(false);
+const fabMenus = [
+  { text: '내 모임', icon: '$cus-people', action: 'myMeeting' },
+  { text: '모임 만들기', icon: 'mdi-plus', action: 'createMeeting' },
+  { text: '내 후기', icon: '$cus-document', action: 'myReview' },
+  { text: '프로필', icon: '$cus-profile', action: 'profile' },
+];
+
 const dialog = ref({
   title: '',
   text: '',
@@ -114,10 +142,13 @@ onUnmounted(() => {
 });
 
 watch(
-  () => route.path, // 현재 경로(path)를 감시합니다.
+  () => route.path, // 현재 경로(path)를 감시
   (newPath, oldPath) => {
     showTopNav.value = true;
     showBotNav.value = true;
+
+    // 페이지 이동 시 메뉴 닫기
+    isFabOpen.value = false;
   }
 );
 
@@ -140,6 +171,27 @@ function hideTopNav() {
 // 하단 앱 바 숨기기
 function hideBotNav() {
   showBotNav.value = false;
+}
+
+// FAB 토글 함수
+function toggleFab() {
+  isFabOpen.value = !isFabOpen.value;
+}
+
+// 메뉴 클릭 핸들러
+function handleMenuClick(action) {
+  console.log('Menu Clicked:', action);
+  isFabOpen.value = false; // 클릭 후 닫기
+  
+  // 액션에 따른 라우팅 처리 예시
+  switch (action) {
+    case 'createMeeting':
+      // navigateTo(router, '/meeting/create');
+      break;
+    case 'profile':
+      navigateTo(router, '/my-page');
+      break;
+  }
 }
 
 // 버튼 클릭 이벤트 핸들러
@@ -178,5 +230,51 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
   height: 56px !important;
   border-radius: 50% !important;
   z-index: 100;
+}
+
+/* FAB 메뉴 컨테이너 */
+.fab-menu-container {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  display: flex;
+  flex-direction: column-reverse; /* 아래에서 위로 쌓이게 */
+  gap: 12px;
+  z-index: 99;
+  align-items: flex-end; /* 오른쪽 정렬 */
+}
+
+/* 개별 메뉴 아이템 (칩 스타일) */
+.fab-menu-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 8px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s;
+  min-width: 140px;
+}
+
+.fab-menu-item:active {
+  transform: scale(0.95);
+}
+
+.fab-icon-box {
+  width: 32px;
+  height: 32px;
+  background-color: #FF6129;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.fab-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
 }
 </style>
