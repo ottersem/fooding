@@ -14,6 +14,8 @@
                 <v-card 
                     class="meeting-card | pa-5" 
                     variant="outlined"
+                    @click="handleClickBtn('goToDetail', group.id)"
+                    style="cursor: pointer;"
                 >
                     <v-row no-gutters class="pb-0 | align-center">
                         <v-col>
@@ -90,6 +92,7 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { navigateTo } from '@/common/RouterUtil.js';
 
 const emit = defineEmits(['hide-top-appbar']);
 const router = useRouter(); 
@@ -175,9 +178,18 @@ onUnmounted(() => {
 });
 
 // ----- 함수 정의 ----- //
-function handleAction(actionType, currentStatus) {
-    console.log(`모임 액션 발생: ${actionType} (현재 상태: ${currentStatus})`);
+
+function handleClickBtn(action, value) {
+  switch (action) {
+    case 'goToDetail':
+      navigateTo(router, '/group/detail', { id: value });
+      break;
+
+    default:
+      console.error('알 수 없는 액션 타입:', action);
+  }
 }
+
 </script> 
 
 <style scoped>
