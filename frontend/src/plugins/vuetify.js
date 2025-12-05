@@ -23,6 +23,7 @@ import IconComplete from '@/assets/icons/complete-icon.svg?component'
 import IconDocument from '@/assets/icons/document-icon.svg?component'
 import IconLogOut from '@/assets/icons/logout-icon.svg?component'
 import IconProfile from '@/assets/icons/profile-icon.svg?component'
+import IconFooding from '@/assets/icons/fooding-icon.svg?component'
 
 const customAliases = {
   ...aliases,
@@ -33,10 +34,11 @@ const customAliases = {
   'cus-people': IconPeople,
   'cus-shine-fill': IconShineFill,
   'cus-shine-line': IconShineLine,
-  'cus-complete-icon': IconComplete,
-  'cus-document-icon': IconDocument,
-  'cus-logout-icon': IconLogOut,
-  'cus-profile-icon': IconProfile,
+  'cus-complete': IconComplete,
+  'cus-document': IconDocument,
+  'cus-logout': IconLogOut,
+  'cus-profile': IconProfile,
+  'cus-fooding': IconFooding,
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

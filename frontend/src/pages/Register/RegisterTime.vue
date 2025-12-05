@@ -70,7 +70,7 @@ import { navigateTo } from '@/common/RouterUtil.js';
 
 const router = useRouter(); 
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 
 const title = "활동 가능한 시간대는?";
 const desc = computed(() => {
@@ -126,6 +126,7 @@ const actTimeList = ref([
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

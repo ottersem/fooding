@@ -96,7 +96,7 @@ import { useRouter, useRoute } from "vue-router";
 import BoxContainer from "@/components/BoxContainer.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 const router = useRouter(); 
 
 const userName = ref('');
@@ -109,6 +109,7 @@ const showPassword = ref(false);
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {
