@@ -42,10 +42,11 @@
           :items="interestList"
           item-title="text"
           item-value="interestId"
-          placeholder="관심분야를 선택하세요" 
+          placeholder="관심분야를 선택하세요 (최대 2개)" 
           class="inputbox"
           variant="outlined" density="comfortable" rounded="lg" bg-color="#FFFFFF" base-color="#E5E8EB" color="#E5E8EB"
           multiple chips closable-chips
+          @update:model-value="handleInputChange('interest', $event)"
         />
       </v-row>
 
@@ -261,13 +262,19 @@ watch([groupTitle, groupDescription, selectedInterestId, meetingDate, selectedTi
 
 
 // ----- 함수 정의 ----- //
-function handleInputChange(action) {
+function handleInputChange(action, value) {
   switch (action) {
     case 'input':
       const length = groupDescription.value?.length ?? 0;
 
       if (length > maxCharLength) {
           groupDescription.value = groupDescription.value.slice(0, maxCharLength);
+      }
+      break;
+    
+    case 'interest':
+      if (value.length > 2) {
+        selectedInterestId.value = value.slice(0, 2);
       }
       break;
   }
