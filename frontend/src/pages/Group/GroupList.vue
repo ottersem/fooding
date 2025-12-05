@@ -64,7 +64,7 @@
                         <v-col cols="12" class="mb-1">
                             <v-row no-gutters class="align-center">
                                 <v-icon color="#6A7282" size="18" class="mr-1">mdi-clock-time-four-outline</v-icon>
-                                <span class="description-text">{{ group.meetingDate }}</span>
+                                <span class="description-text">{{ group.meetingDate }} {{ getTimeSlotText(group.timeSlotId) }}</span>
                             </v-row>
                         </v-col>
                         <v-col cols="12">
@@ -178,6 +178,18 @@ onUnmounted(() => {
 });
 
 // ----- 함수 정의 ----- //
+
+function getTimeSlotText(timeSlotId) {
+  const timeSlots = {
+    1: '평일 오전 (09:00 - 12:00)',
+    2: '평일 오후 (12:00 - 18:00)',
+    3: '평일 저녁 (18:00 - 22:00)',
+    4: '주말 오전 (09:00 - 12:00)',
+    5: '주말 오후 (12:00 - 18:00)',
+    6: '주말 저녁 (18:00 - 22:00)'
+  };
+  return timeSlots[timeSlotId] || '';
+}
 
 function handleClickBtn(action, value) {
   switch (action) {
