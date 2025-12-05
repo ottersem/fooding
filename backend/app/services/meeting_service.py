@@ -91,7 +91,7 @@ def get_meeting_detail(
   current_members = [
     m for m in group.members if m.status == MEMBER_STATUS_ACCEPTED
   ]
-  current_member_count = len(current_members)
+  current_participants = len(current_members) 
 
   my_member_status: Optional[str] = None
   if current_user_id is not None:
@@ -113,7 +113,7 @@ def get_meeting_detail(
     status=group.status,
     creator_id=group.creator_id,
     creator_name=group.creator.username,
-    current_member_count=current_member_count,
+    current_participants=current_participants,
     my_member_status=my_member_status,
     open_chat_link=group.open_chat_link,
   )
@@ -167,7 +167,7 @@ def get_main_meeting_list(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_member_count=len(accepted_members),
+        current_participants=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )
@@ -328,7 +328,7 @@ def get_my_meetings(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_member_count=len(accepted_members),
+        current_participants=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )

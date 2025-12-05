@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr, Field
 class SignUpRequest(BaseModel):
     username: str
     email: EmailStr
-    password: str = Field(..., min_length=6, max_length=50)
+    password: str = Field(..., min_length=6, max_length=30)
     major: Optional[str] = None
     grade: Optional[str] = None
     intro_text: Optional[str] = Field(None, max_length=100)

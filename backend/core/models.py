@@ -35,7 +35,7 @@ class User(Base):
   reviews_received = relationship(
     "Review",
     back_populates="reviewed",
-    foreign_keys="Review.reviewed_id",
+    foreign_keys="Review.review_ed_id",
   )
 
 
@@ -139,7 +139,7 @@ class Review(Base):
   group_id = Column(Integer, ForeignKey("groups.id"), nullable=False)
   reviewer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
   review_ed_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-
+  score = Column(Integer, nullable=False)
   comment = Column(String(100), nullable=False)
 
   group = relationship("Group", back_populates="reviews")

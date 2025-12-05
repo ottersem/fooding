@@ -30,7 +30,7 @@ class MeetingSummary(BaseModel):
   interest_code: str
   meeting_date: date
   time_slot_label: str
-  current_member_count: int
+  current_participants: int
   max_participants: int
   status: str
 
@@ -48,7 +48,7 @@ class MeetingDetail(BaseModel):
   status: str
   creator_id: int
   creator_name: str
-  current_member_count: int
+  current_participants: int
   my_member_status: Optional[str] = None
   open_chat_link: Optional[str] = None
 
