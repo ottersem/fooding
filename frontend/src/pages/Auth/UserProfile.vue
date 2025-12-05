@@ -17,6 +17,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.userName"
           placeholder="이름을 입력하세요" 
           class="inputbox"
@@ -29,8 +30,9 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.major"
-          placeholder="예: 소프트웨어학부" 
+          placeholder="예: 예술공학부" 
           class="inputbox"
           variant="outlined" density="comfortable" rounded="lg" bg-color="#F9FAFB" base-color="#E5E8EB" color="#E5E8EB"
         />
@@ -41,6 +43,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.grade"
           placeholder="예: 3학년" 
           class="inputbox"
@@ -53,6 +56,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.email"
           placeholder="email@cau.ac.kr" 
           class="inputbox"
@@ -65,6 +69,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-textarea
+          readonly
           v-model="userData.introText"
           placeholder="예: ENTJ, 1학년인데 취업에 관심 있는 사람들과 대화 나누고 싶어요" 
           hide-details
@@ -83,6 +88,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.interests"
           placeholder="예: IT, 창업, 여행" 
           class="inputbox"
@@ -95,6 +101,7 @@
       </v-row>
       <v-row no-gutters class="justify-center | mt-1">
         <v-text-field
+          readonly
           v-model="userData.preferredTime"
           placeholder="예: 평일 저녁, 주말 오후" 
           class="inputbox"
@@ -103,10 +110,10 @@
       </v-row>
     </v-container>
 
-    <SaveFooter
+    <!-- <SaveFooter
       @go-next="handleClickBtn('saveProfile')"
       :active="active"
-    />
+    /> -->
 </template>
 
 <script setup>
