@@ -207,7 +207,7 @@ def get_main_meeting_list(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_member_count=len(accepted_members),
+        current_participants=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )
@@ -406,7 +406,7 @@ def get_my_meetings(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_member_count=len(accepted_members),
+        current_participants=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )
