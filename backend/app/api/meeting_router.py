@@ -29,11 +29,39 @@ def get_main_list(
   tab: str = Query("recruiting"),
   page: Optional[int] = Query(1),
   size: Optional[int] = Query(10),
+
+  # 🔽 새로 추가되는 필터/정렬 옵션
+  interest_id: Optional[int] = Query(None, description="관심사 ID로 필터링"),
+  time_slot_id: Optional[int] = Query(None, description="시간대 ID로 필터링"),
+  sort_by: str = Query(
+    "latest",
+    description="정렬 기준: latest(기본), date, members",
+  ),
+
   current_user: CurrentUser = Depends(get_current_user),
   db: Session = Depends(get_db),
 ):
-  # 메인 화면에서 사용할 모임 목록을 반환
-  return get_main_meeting_list(db, current_user.id, tab, page, size)
+  """
+  메인 화면에서 사용할 모임 목록을 반환.
+  - tab: recruiting / ongoing / finished / applied
+  - interest_id: 해당 관심사로 필터링
+  - time_slot_id: 해당 시간대로 필터링
+  - sort_by:
+      - latest  : 최신 생성순 (id desc)
+      - date    : 모임 날짜 빠른 순 (meeting_date asc)
+      - members : 현재 참여 인원 많은 순
+  """
+  return get_main_meeting_list(
+    db=db,
+    current_user_id=current_user.id,
+    tab=tab,
+    page=page,
+    size=size,
+    interest_id=interest_id,
+    time_slot_id=time_slot_id,
+    sort_by=sort_by,
+  )
+
 
 
 @router.post("", response_model=MeetingDetail)
@@ -104,8 +132,35 @@ def get_my_meetings_endpoint(
   tab: str = Query("all"),
   page: Optional[int] = Query(1),
   size: Optional[int] = Query(10),
+
+  interest_id: Optional[int] = Query(None, description="관심사 ID로 필터링"),
+  time_slot_id: Optional[int] = Query(None, description="시간대 ID로 필터링"),
+  sort_by: str = Query(
+    "latest",
+    description="정렬 기준: latest(기본), date, members",
+  ),
+
   current_user: CurrentUser = Depends(get_current_user),
   db: Session = Depends(get_db),
 ):
-  # 내 모임 탭에서 사용할 목록을 반환
-  return get_my_meetings(db, current_user.id, tab, page, size)
+  """
+  내 모임 탭에서 사용할 목록을 반환.
+  - tab: all / recruiting / ongoing / finished / applied
+  - interest_id: 해당 관심사로 필터링
+  - time_slot_id: 해당 시간대로 필터링
+  - sort_by:
+      - latest  : 최신 생성순
+      - date    : 모임 날짜 빠른 순
+      - members : 현재 참여 인원 많은 순
+  """
+  return get_my_meetings(
+    db=db,
+    current_user_id=current_user.id,
+    tab=tab,
+    page=page,
+    size=size,
+    interest_id=interest_id,
+    time_slot_id=time_slot_id,
+    sort_by=sort_by,
+  )
+

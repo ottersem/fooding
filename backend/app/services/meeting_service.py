@@ -125,6 +125,9 @@ def get_main_meeting_list(
   tab: str,
   page: Optional[int],
   size: Optional[int],
+  interest_id: Optional[int],
+  time_slot_id: Optional[int],
+  sort_by: str,
 ) -> List[MeetingSummary]:
   # 메인 탭별 모임 목록을 조회
   offset = get_offset(page, size)
@@ -132,9 +135,14 @@ def get_main_meeting_list(
 
   query = (
     db.query(Group)
-    .options(joinedload(Group.interest), joinedload(Group.time_slot), joinedload(Group.members))
+    .options(
+      joinedload(Group.interest),
+      joinedload(Group.time_slot),
+      joinedload(Group.members),
+    )
   )
 
+  # 1) 탭(status) 필터
   if tab == "recruiting":
     query = query.filter(Group.status == STATUS_RECRUITING)
   elif tab == "ongoing":
@@ -142,17 +150,49 @@ def get_main_meeting_list(
   elif tab == "finished":
     query = query.filter(Group.status == STATUS_FINISHED)
   elif tab == "applied":
-    # 내가 관련된 모임을 먼저 찾은 뒤 그 ID들로 groups를 조회
-    my_members = db.query(GroupMember).filter(GroupMember.user_id == current_user_id).all()
+    my_members = (
+      db.query(GroupMember)
+      .filter(GroupMember.user_id == current_user_id)
+      .all()
+    )
     group_ids = list({m.group_id for m in my_members})
     if not group_ids:
       return []
     query = query.filter(Group.id.in_(group_ids))
   else:
-    # 기본은 모집중 탭으로 처리
+    # 기본값: 모집중
     query = query.filter(Group.status == STATUS_RECRUITING)
 
-  groups = query.offset(offset).limit(limit).all()
+  # 2) 관심사 필터
+  if interest_id is not None:
+    query = query.filter(Group.interest_id == interest_id)
+
+  # 3) 시간대 필터
+  if time_slot_id is not None:
+    query = query.filter(Group.time_slot_id == time_slot_id)
+
+  # 4) 정렬 옵션
+  if sort_by == "date":
+    # 모임 날짜 빠른 순
+    query = query.order_by(Group.meeting_date.asc(), Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
+  elif sort_by == "latest":
+    # 최신 생성 순
+    query = query.order_by(Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
+  elif sort_by == "members":
+    # 참여 인원 많은 순 (Python에서 정렬 - joinedload로 미리 멤버 로드됨)
+    groups = query.offset(offset).limit(limit).all()
+    groups.sort(
+      key=lambda g: len(
+        [m for m in g.members if m.status == MEMBER_STATUS_ACCEPTED]
+      ),
+      reverse=True,
+    )
+  else:
+    # 알 수 없는 sort 옵션이면 기본: latest
+    query = query.order_by(Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
 
   summaries: List[MeetingSummary] = []
   for g in groups:
@@ -167,13 +207,14 @@ def get_main_meeting_list(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_participants=len(accepted_members),
+        current_member_count=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )
     )
 
   return summaries
+
 
 
 def update_meeting(
@@ -289,31 +330,68 @@ def get_my_meetings(
   tab: str,
   page: Optional[int],
   size: Optional[int],
+  interest_id: Optional[int],
+  time_slot_id: Optional[int],
+  sort_by: str,
 ) -> List[MeetingSummary]:
   # 내 모임 탭에서 사용할 목록을 조회
   offset = get_offset(page, size)
   limit = size or 10
 
-  my_members = db.query(GroupMember).filter(GroupMember.user_id == current_user_id).all()
+  my_members = (
+    db.query(GroupMember)
+    .filter(GroupMember.user_id == current_user_id)
+    .all()
+  )
   group_ids = list({m.group_id for m in my_members})
   if not group_ids:
     return []
 
   query = (
     db.query(Group)
-    .options(joinedload(Group.interest), joinedload(Group.time_slot), joinedload(Group.members))
+    .options(
+      joinedload(Group.interest),
+      joinedload(Group.time_slot),
+      joinedload(Group.members),
+    )
     .filter(Group.id.in_(group_ids))
   )
 
+  # 1) 탭(status) 필터
   if tab == "recruiting":
     query = query.filter(Group.status == STATUS_RECRUITING)
   elif tab == "ongoing":
     query = query.filter(Group.status == STATUS_ONGOING)
   elif tab == "finished":
     query = query.filter(Group.status == STATUS_FINISHED)
-  # tab == "applied" / "all" 은 status 필터 없이 사용
+  # tab == "applied" / "all" 은 status 필터 없음
 
-  groups = query.offset(offset).limit(limit).all()
+  # 2) 관심사 필터
+  if interest_id is not None:
+    query = query.filter(Group.interest_id == interest_id)
+
+  # 3) 시간대 필터
+  if time_slot_id is not None:
+    query = query.filter(Group.time_slot_id == time_slot_id)
+
+  # 4) 정렬 옵션
+  if sort_by == "date":
+    query = query.order_by(Group.meeting_date.asc(), Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
+  elif sort_by == "latest":
+    query = query.order_by(Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
+  elif sort_by == "members":
+    groups = query.offset(offset).limit(limit).all()
+    groups.sort(
+      key=lambda g: len(
+        [m for m in g.members if m.status == MEMBER_STATUS_ACCEPTED]
+      ),
+      reverse=True,
+    )
+  else:
+    query = query.order_by(Group.id.desc())
+    groups = query.offset(offset).limit(limit).all()
 
   summaries: List[MeetingSummary] = []
   for g in groups:
@@ -328,10 +406,11 @@ def get_my_meetings(
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,
         time_slot_label=g.time_slot.label,
-        current_participants=len(accepted_members),
+        current_member_count=len(accepted_members),
         max_participants=g.max_participants,
         status=g.status,
       )
     )
 
   return summaries
+
