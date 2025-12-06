@@ -52,7 +52,7 @@
 
       <v-card-title>
         <v-row no-gutters class="align-center | justify-center">
-          <v-icon size="64" color="#FF6129" icon="$cus-complete-icon"/>
+          <v-icon size="64" color="#FF6129" icon="$cus-complete"/>
         </v-row>
         <v-row no-gutters class="align-center | justify-center | mt-3"
           style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
@@ -84,7 +84,7 @@ import { navigateTo } from '@/common/RouterUtil.js';
 const router = useRouter(); 
 const active = ref(false);
 
-const emit = defineEmits(['hide-top-appbar']);
+const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 
 const dialog = ref({
   title: '',
@@ -111,6 +111,7 @@ const recmList = ref([
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-top-appbar');
+  emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {

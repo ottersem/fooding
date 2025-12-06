@@ -5,35 +5,95 @@
       v-if="showTopNav"
     >
       <v-row no-gutters class="justify-space-between | align-center | header-container">
-        <v-col cols="auto" class="pl-2">
+        <!-- 로고가 있을 때 -->
+        <template v-if="currentPageCfg.showLogo">
+          <v-col cols="auto" class="pl-5 | pt-1">
+            <v-img
+              src="@/assets/title.png"
+              alt="Fooding Logo"
+              contain width="84"
+            />
+          </v-col>
+          <v-col cols="auto" class="pr-2">
             <v-btn
+              v-if="currentPageCfg.showRightBtn"
+              icon="$cus-profile" 
+              variant="outlined" density="comfortable" rounded="circle"
+              class="profileIcon"
+              @click="handleClickBtn('goToMypage')"
+            ></v-btn>
+          </v-col>
+        </template>
+
+        <!-- 로고가 없을 때 (타이틀 표시) -->
+        <template v-else>
+          <!-- 왼쪽 버튼 영역 -->
+          <v-col cols="auto" class="pl-2">
+            <v-btn
+              v-if="currentPageCfg.showLeftBtn"
               icon="mdi-chevron-left" 
               variant="text" density="comfortable"
               @click="handleClickBtn('goToBack')"
             ></v-btn>
-        </v-col>
+            <div v-else style="width: 40px;"></div>
+          </v-col>
 
-        <v-col cols="auto" class="nav-text">
-          {{ 'asdf' }}
-        </v-col>
+          <!-- 중앙 타이틀 -->
+          <v-col cols="auto" class="nav-center">
+            <span class="nav-text">{{ currentPageCfg.name }}</span>
+          </v-col>
 
-        <v-col cols="auto" class="nav-icon | pr-2">
+          <!-- 오른쪽 버튼 영역 -->
+          <v-col cols="auto" class="nav-icon | pr-2">
             <v-btn
-              icon="$cus-profile-icon" 
+              v-if="currentPageCfg.showRightBtn"
+              icon="$cus-profile" 
               variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
-        </v-col>
-
+            <div v-else style="width: 40px;"></div>
+          </v-col>
+        </template>
       </v-row>
     </v-app-bar>
 
     <v-main>
       <router-view
         @hide-top-appbar="hideTopNav"
+        @hide-bottom-appbar="hideBotNav"
       ></router-view>
     </v-main>
 
+      <v-slide-y-reverse-transition>
+      <div v-if="isFabOpen && showBotNav" class="fab-menu-container">
+        <div 
+          v-for="(item, index) in fabMenus" 
+          :key="index"
+          class="fab-menu-item"
+          @click="handleMenuClick(item.action)"
+        >
+          <div class="fab-icon-box">
+            <v-icon color="#FFFFFF" size="20">{{ item.icon }}</v-icon>
+          </div>
+          <span class="fab-text">{{ item.text }}</span>
+        </div>
+      </div>
+    </v-slide-y-reverse-transition>
+
+    <v-btn
+      v-if="showBotNav"
+      class="floating-btn"
+      color="#FF6129"
+      elevation="4"
+      icon="mdi-plus"
+      @click="toggleFab"
+    >
+      <v-icon 
+        color="#FFFFFF" size="32" 
+        :icon="isFabOpen ? 'mdi-close' : '$cus-fooding'"
+        :style="{ transform: isFabOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: '0.3s' }"
+      />
+    </v-btn>
   </v-app>
 
   <!-- 다이얼로그 -->
@@ -72,9 +132,10 @@
 
 <script setup>
 // ----- 선언부 ----- //
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { navigateTo } from '@/common/RouterUtil.js';
+import mainLogo from '@/assets/main-logo.svg';
 
 // 라우터 인스턴스 가져오기
 const router = useRouter();
@@ -82,6 +143,86 @@ const route = useRoute(); // (추가) 현재 라우트 정보 가져오기
 
 // 네비게이션 표시 상태
 const showTopNav = ref(true);
+const showBotNav = ref(true);
+
+// 페이지별 네비게이션 설정
+const pageList = ref([
+  { 
+    page: 'GroupList',
+    name: '홈', 
+    path: '/group', 
+    showLogo: true,
+    showLeftBtn: false,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupDetail',
+    name: '모임 상세', 
+    path: '/group/detail', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupCreate',
+    name: '모임 만들기', 
+    path: '/group/create', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'GroupUser',
+    name: '내 모임', 
+    path: '/group/user', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'UserMenu',
+    name: '마이페이지', 
+    path: '/user', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'UserProfile',
+    name: '프로필 편집', 
+    path: '/user/profile', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'UserReview',
+    name: '내 후기', 
+    path: '/user/review', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+]);
+
+// 현재 페이지 설정 계산
+const currentPageCfg = computed(() => {
+  return pageList.value.find(page => page.path === route.path) || {
+    name: '',
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true
+  };
+});
+
+// FAB 상태 및 메뉴 데이터
+const isFabOpen = ref(false);
+const fabMenus = [
+  { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
+  { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
+  { text: '내 후기', icon: '$cus-document', action: 'myReview' },
+  // { text: '프로필', icon: '$cus-profile', action: 'profile' },
+];
 
 const dialog = ref({
   title: '',
@@ -103,9 +244,13 @@ onUnmounted(() => {
 });
 
 watch(
-  () => route.path, // 현재 경로(path)를 감시합니다.
+  () => route.path, // 현재 경로(path)를 감시
   (newPath, oldPath) => {
     showTopNav.value = true;
+    showBotNav.value = true;
+
+    // 페이지 이동 시 메뉴 닫기
+    isFabOpen.value = false;
   }
 );
 
@@ -125,11 +270,46 @@ function hideTopNav() {
   showTopNav.value = false;
 }
 
+// 하단 앱 바 숨기기
+function hideBotNav() {
+  showBotNav.value = false;
+}
+
+// FAB 토글 함수
+function toggleFab() {
+  isFabOpen.value = !isFabOpen.value;
+}
+
+// 메뉴 클릭 핸들러
+function handleMenuClick(action) {
+  console.log('Menu Clicked:', action);
+  isFabOpen.value = false; // 클릭 후 닫기
+  
+  // 액션에 따른 라우팅 처리 예시
+  switch (action) {
+    case 'create':
+      navigateTo(router, '/group/create');
+      break;
+
+    case 'profile':
+      navigateTo(router, '/user');
+      break;
+
+    case 'userGroup':
+      navigateTo(router, '/group/user');
+      break;
+
+    case 'myReview':
+      navigateTo(router, '/user/review');
+      break;
+  }
+}
+
 // 버튼 클릭 이벤트 핸들러
 function handleClickBtn(action) {
   switch (action) {
     case 'goToMypage':
-      navigateTo(router, '/my-page');
+      navigateTo(router, '/user');
       break;
 
     case 'goToBack':
@@ -154,4 +334,79 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
 
 <style scoped>
 
+/* 네비게이션 바 스타일 */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #364153;
+  letter-spacing: -0.2px;
+}
+
+.profileIcon {
+  background-color: #F3F4F6;
+  color: #364153;
+  border: 0px;
+}
+
+.floating-btn {
+  position: fixed !important;
+  bottom: 24px;
+  right: 24px;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  z-index: 100;
+}
+
+/* FAB 메뉴 컨테이너 */
+.fab-menu-container {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  display: flex;
+  flex-direction: column-reverse; /* 아래에서 위로 쌓이게 */
+  gap: 12px;
+  z-index: 99;
+  align-items: flex-end; /* 오른쪽 정렬 */
+}
+
+/* 개별 메뉴 아이템 (칩 스타일) */
+.fab-menu-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 8px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s;
+  min-width: 140px;
+}
+
+.fab-menu-item:active {
+  transform: scale(0.95);
+}
+
+.fab-icon-box {
+  width: 32px;
+  height: 32px;
+  background-color: #FF6129;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.fab-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
 </style>

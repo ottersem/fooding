@@ -27,14 +27,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ "@/pages/Auth/Login.vue")
   },
   {
-    path: '/my-page',
-    name: 'MyPage',
-    component: () => import(/* webpackChunkName: "my-page" */ "@/pages/Auth/MyPage.vue")
+    path: '/user',
+    name: 'UserMenu',
+    component: () => import(/* webpackChunkName: "user-menu" */ "@/pages/Auth/UserMenu.vue")
   },
   {
-    path: '/user-profile',
+    path: '/user/profile',
     name: 'UserProfile',
     component: () => import(/* webpackChunkName: "user-profile" */ "@/pages/Auth/UserProfile.vue")
+  },
+  {
+    path: '/user/review',
+    name: 'UserReview',
+    component: () => import(/* webpackChunkName: "user-review" */ "@/pages/Auth/UserReview.vue")
   },
   {
     path: '/group',
@@ -45,6 +50,16 @@ const routes = [
     path: '/group/detail',
     name: 'GroupDetail',
     component: () => import(/* webpackChunkName: "group-detail" */ "@/pages/Group/GroupDetail.vue")
+  },
+  {
+    path: '/group/create',
+    name: 'GroupCreate',
+    component: () => import(/* webpackChunkName: "group-create" */ "@/pages/Group/GroupCreate.vue")
+  },
+  {
+    path: '/group/user',
+    name: 'GroupUser',
+    component: () => import(/* webpackChunkName: "group-user" */ "@/pages/Group/GroupUser.vue")
   },
   {
     path: '/register',

@@ -1,0 +1,15 @@
+services:
+  fooding:
+    image: mysql:8.0
+    container_name: fooding
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - fooding_mysql_data:/var/lib/mysql
+
+volumes:
+  fooding_mysql_data:
