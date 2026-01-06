@@ -19,6 +19,8 @@ import IconLocation from '@/assets/icons/location-icon.svg?component'
 import IconPeople from '@/assets/icons/people-icon.svg?component'
 import IconShineFill from '@/assets/icons/shine-icon-fill.svg?component'
 import IconShineLine from '@/assets/icons/shine-icon-line.svg?component'
+import IconStarFill from '@/assets/icons/star-icon-fill.svg?component'
+import IconStarLine from '@/assets/icons/star-icon-line.svg?component'
 import IconComplete from '@/assets/icons/complete-icon.svg?component'
 import IconDocument from '@/assets/icons/document-icon.svg?component'
 import IconLogOut from '@/assets/icons/logout-icon.svg?component'
@@ -32,8 +34,10 @@ const customAliases = {
   'cus-clock': IconClock,
   'cus-location': IconLocation,
   'cus-people': IconPeople,
-  'cus-shine-fill': IconShineFill,
   'cus-shine-line': IconShineLine,
+  'cus-shine-fill': IconShineFill,
+  'cus-star-fill': IconStarFill,
+  'cus-star-line': IconStarLine,
   'cus-complete': IconComplete,
   'cus-document': IconDocument,
   'cus-logout': IconLogOut,
