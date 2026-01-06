@@ -1,35 +1,41 @@
 <template>
     <v-container class="pa-0">
         <v-row no-gutters class="stat-box">
-            <v-col>
-              <v-row no-gutters>
-                
+            <v-col class="stat-container | pt-3 | pb-3">
+              <v-row no-gutters class="justify-center | stat-text">
+                {{ reviewStats.totalParticipated }}
               </v-row>
-              <v-row no-gutters class="justify-center | label-font">
+              <v-row no-gutters class="justify-center | label-text">
                 총 참여
               </v-row>
             </v-col>
-            <v-col>
-              <v-row no-gutters>
-                
+            <v-col class="stat-container | pt-3 | pb-3">
+              <v-row no-gutters class="justify-center | stat-text">
+                {{ reviewStats.totalReviewed }}
               </v-row>
-              <v-row no-gutters class="justify-center | label-font">
+              <v-row no-gutters class="justify-center | label-text">
                 작성한 후기
               </v-row>
             </v-col>
-            <v-col>
-              <v-row no-gutters>
-                
+            <v-col class="stat-container | pt-3 | pb-3">
+              <v-row no-gutters class="justify-center | align-center | stat-text">
+                <v-icon 
+                  icon="$cus-star-fill" 
+                  size="20" 
+                  color="#FFB800"
+                  class=""
+                />
+                {{ reviewStats.averageRating.toFixed(1) }}
               </v-row>
-              <v-row no-gutters class="justify-center | label-font">
+              <v-row no-gutters class="justify-center | label-text">
                 평균 별점
               </v-row>
             </v-col>
         </v-row>
 
-        <v-row no-gutters class="justify-center | ml-4 | mr-4 | mt-6">
+        <v-row no-gutters class="justify-center | ml-4 | mr-4">
             <v-col 
-                v-for="(group, index) in groupList" 
+                v-for="(group, index) in reviewList" 
                 :key="index"
                 cols="12"
                 class="mb-4"
@@ -37,8 +43,6 @@
                 <v-card 
                     class="meeting-card | pa-4" 
                     variant="outlined"
-                    @click="handleClickBtn('goToDetail', group.id)"
-                    style="cursor: pointer;"
                 >
                     <v-row no-gutters class="pb-0 | align-center">
                       <v-row no-gutters class="align-center">
@@ -68,19 +72,19 @@
 
                     <v-row no-gutters class="pa-0 | mt-3 | mb-3">
                       <v-col cols="12" class="mb-1">
-                          <v-row no-gutters class="align-center" style="gap: 4px;">
+                          <v-row no-gutters class="align-center" style="gap: 2px;">
                               <v-icon 
                                   v-for="n in 5" 
                                   :key="n"
-                                  icon="mdi-star"
+                                  icon="$cus-star-fill"
                                   size="16"
                                   color="#FFB800"
                               ></v-icon>
                           </v-row>
                       </v-col>
-                        <v-col cols="12" class="mb-1">
+                        <v-col cols="12">
                             <v-row no-gutters class="align-center | description-text">
-                                {{ group.description }}
+                                {{ group.comment }}
                             </v-row>
                         </v-col>
                     </v-row>
@@ -97,6 +101,16 @@
                         <v-chip v-if="group.interestId === 4" size="small" variant="outline" class="tag-chip">스터디</v-chip>
                         <v-chip v-if="group.interestId === 5" size="small" variant="outline" class="tag-chip">취미/여가</v-chip>
                     </v-row>
+                    <v-btn
+                      variant="outlined"
+                      class="active-thin-btn | mt-3"
+                      @click="handleClickBtn('goToNext')"
+                    >후기 작성하기</v-btn>
+                    <v-btn
+                      variant="outlined"
+                      class="unactive-thin-btn | mt-3"
+                      @click="handleClickBtn('goToNext')"
+                    >후기 수정하기</v-btn>
                 </v-card>
             </v-col>
         </v-row>
@@ -115,76 +129,83 @@ const router = useRouter();
 const title = "이번주 밥약/커피챗 신청";
 const desc = "지금 선택한 관심사와 시간대에 맞춰 추천된 모임을 보여드릴게요";
 
-const groupList = ref([
+const reviewStats = ref({
+  totalParticipated: 12,
+  totalReviewed: 8,
+  averageRating: 4.5,
+});
+
+const reviewList = ref([
   {
-    id: 1,
-    creatorId: 10,
-    categoryId: 1, // 일상/친목
-    interestId: 1, // ㅁㄴㄹㅇ
+    id: 1, // review id
+    groupId: 101,
+    reviewerId: 10,
+    reviewedId: 20,
+    score: 5,
+    comment: "정말 즐거운 시간이었어요! 다음에도 함께하고 싶습니다.",
+
+    // 모임 정보
     title: "점심 같이 먹을 사람 구해요",
-    description: "혼밥보다는 함께 밥 먹으면서 수다떨 사람 찾아요. 편하게 이야기 나눠요!",
     meetingDate: "2025-12-10",
-    timeSlotId: 2,
-    place: "학생식당 2층",
-    maxParticipants: 4,
-    currentParticipants: 2,
-    status: 0, // 모집중
+    categoryId: 1, // 일상/친목
+    interestId: 1,
+    status: 0, // 후기 작성 완료
   },
   {
     id: 2,
-    creatorId: 12,
+    groupId: 102,
+    reviewerId: 12,
+    reviewedId: 22,
+    score: 4,
+    comment: "유익한 시간이었습니다. 함께 준비하면서 많이 배웠어요.",
+    // 모임 정보
+    title: "공모전 팀원 모집합니다",
+    meetingDate: "2025-12-11",
     categoryId: 2, // 대외활동/공모전
     interestId: 2,
-    title: "공모전 팀원 모집합니다",
-    description: "마케팅 공모전 준비할 팀원을 찾습니다. 적극적이고 열정 있는 분 환영해요!",
-    meetingDate: "2025-12-11",
-    timeSlotId: 3,
-    place: "카페 스타벅스",
-    maxParticipants: 5,
-    currentParticipants: 3,
-    status: 1, // 신청
+    status: 1, // 후기 미작성
   },
   {
     id: 3,
-    creatorId: 15,
+    groupId: 103,
+    reviewerId: 15,
+    reviewedId: 25,
+    score: 5,
+    comment: "같은 고민을 나누니 위로가 되었어요. 서로 응원하며 힘내봐요!",
+    // 모임 정보
+    title: "취업고민 같이 나눠요",
+    meetingDate: "2025-12-12",
     categoryId: 3, // 커리어
     interestId: 3,
-    title: "취업고민 같이 나눠요",
-    description: "취업 준비하면서 느끼는 고민들 편하게 얘기해요. 같은 목표를 가진 사람끼리 정보도 공유하고 동기부여도 받아요!",
-    meetingDate: "2025-12-12",
-    timeSlotId: 4,
-    place: "카페 블루보틀",
-    maxParticipants: 4,
-    currentParticipants: 4,
-    status: 2, // 진행
+    status: 0, // 후기 작성 완료
   },
   {
     id: 4,
-    creatorId: 18,
+    groupId: 104,
+    reviewerId: 18,
+    reviewedId: 28,
+    score: 4,
+    comment: "알고리즘 문제 풀이가 정말 도움됐어요. 꾸준히 하면 좋겠네요.",
+    // 모임 정보
+    title: "알고리즘 스터디원 구합니다",
+    meetingDate: "2025-12-13",
     categoryId: 4, // 스터디
     interestId: 4,
-    title: "알고리즘 스터디원 구합니다",
-    description: "코딩테스트 준비를 위한 알고리즘 스터디 모집합니다. 주 2회 정기 모임 예정이에요.",
-    meetingDate: "2025-12-13",
-    timeSlotId: 3,
-    place: "학교 도서관 3층 스터디룸",
-    maxParticipants: 6,
-    currentParticipants: 5,
-    status: 3, // 완료
+    status: 1, // 후기 미작성
   },
   {
     id: 5,
-    creatorId: 20,
+    groupId: 105,
+    reviewerId: 20,
+    reviewedId: 30,
+    score: 5,
+    comment: "운동 친구 생겨서 좋아요! 서로 동기부여 되면서 꾸준히 할 수 있을 것 같아요.",
+    // 모임 정보
+    title: "헬스 운동 친구 모집",
+    meetingDate: "2025-12-14",
     categoryId: 5, // 취미/여가
     interestId: 5,
-    title: "헬스 운동 친구 모집",
-    description: "운동 친구 구합니다! 주 3회 저녁 시간대에 헬스장 같이 갈 사람 모여라~ 초보자 환영!",
-    meetingDate: "2025-12-14",
-    timeSlotId: 5,
-    place: "학교 체육관 헬스장",
-    maxParticipants: 4,
-    currentParticipants: 1,
-    status: 0, // 모집중
+    status: 0, // 후기 작성 완료
   },
 ]);
 
@@ -226,7 +247,14 @@ function handleClickBtn(action, value) {
 
 <style scoped>
 .stat-box {
-  padding: 24px 24px 16px 24px;
+  padding: 16px 24px 24px 24px;
+  gap: 8px;
+}
+
+.stat-container {
+  background-color: #FFFFFF;
+  border: 0.67px solid #E5E7EB;
+  border-radius: 10px;
 }
 
 .meeting-card {
@@ -285,6 +313,18 @@ function handleClickBtn(action, value) {
 .status-chip-completed {
     background-color: #F3F4F6 !important;
     color: #4A5565 !important;
+}
+
+.stat-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4A5565;
+}
+
+.label-text {
+  font-size: 14px;
+  font-weight: 450;
+  color: #4A5565;
 }
 
 .categoryId-text {
