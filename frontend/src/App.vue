@@ -165,6 +165,30 @@ const pageList = ref([
     showRightBtn: true 
   },
   { 
+    page: 'GroupEdit',
+    name: '모임 편집', 
+    path: '/group/edit', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupLink',
+    name: '그룹 채팅 링크 생성', 
+    path: '/group/link', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupJoin',
+    name: '신청자 관리', 
+    path: '/group/join', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
     page: 'GroupCreate',
     name: '모임 만들기', 
     path: '/group/create', 
@@ -199,7 +223,7 @@ const pageList = ref([
   { 
     page: 'UserReview',
     name: '내 후기', 
-    path: '/user/review', 
+    path: '/review/user', 
     showLogo: false,
     showLeftBtn: true,
     showRightBtn: false 
@@ -221,7 +245,7 @@ const isFabOpen = ref(false);
 const fabMenus = [
   { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
   { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
-  { text: '내 후기', icon: '$cus-document', action: 'myReview' },
+  { text: '내 후기', icon: '$cus-document', action: 'UserReview' },
   // { text: '프로필', icon: '$cus-profile', action: 'profile' },
 ];
 
@@ -300,8 +324,8 @@ function handleMenuClick(action) {
       navigateTo(router, '/group/user');
       break;
 
-    case 'myReview':
-      navigateTo(router, '/user/review');
+    case 'UserReview':
+      navigateTo(router, '/review/user');
       break;
   }
 }
