@@ -25,6 +25,7 @@ import IconComplete from '@/assets/icons/complete-icon.svg?component'
 import IconDocument from '@/assets/icons/document-icon.svg?component'
 import IconLogOut from '@/assets/icons/logout-icon.svg?component'
 import IconProfile from '@/assets/icons/profile-icon.svg?component'
+import IconFilterLine from '@/assets/icons/filter-icon-line.svg?component'
 import IconFooding from '@/assets/icons/fooding-icon.svg?component'
 
 const customAliases = {
@@ -42,6 +43,7 @@ const customAliases = {
   'cus-document': IconDocument,
   'cus-logout': IconLogOut,
   'cus-profile': IconProfile,
+  'cus-filter-line': IconFilterLine,
   'cus-fooding': IconFooding,
 }
 
