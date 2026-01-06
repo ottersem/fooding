@@ -134,7 +134,7 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { navigateTo } from '@/common/RouterUtil.js';
+import { navigateTo, goBack } from '@/common/RouterUtil.js';
 import mainLogo from '@/assets/main-logo.svg';
 
 // 라우터 인스턴스 가져오기
@@ -313,7 +313,7 @@ function handleClickBtn(action) {
       break;
 
     case 'goToBack':
-      navigateTo(router, '/');
+      goBack(router);
       break;
 
     default:
