@@ -48,7 +48,8 @@
             <v-btn
               v-if="currentPageCfg.showRightBtn"
               icon="$cus-profile" 
-              variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
+              variant="outlined" density="comfortable" rounded="circle"
+              class="profileIcon"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
             <div v-else style="width: 40px;"></div>
