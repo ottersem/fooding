@@ -88,7 +88,7 @@ function handleClickBtn(action) {
       break;
 
     case 'goToReview':
-      navigateTo(router, '/review/user');
+      navigateTo(router, '/review');
       break;
 
     case 'logout':

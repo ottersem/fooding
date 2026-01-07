@@ -37,9 +37,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "user-profile" */ "@/pages/Auth/UserProfile.vue")
   },
   {
-    path: '/review/user',
+    path: '/review',
     name: 'UserReview',
     component: () => import(/* webpackChunkName: "user-review" */ "@/pages/Auth/UserReview.vue")
+  },
+  {
+    path: '/review/create',
+    name: 'CreateReview',
+    component: () => import(/* webpackChunkName: "user-review" */ "@/pages/Review/CreateReview.vue")
   },
   {
     path: '/group',

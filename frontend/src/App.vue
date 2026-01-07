@@ -223,7 +223,15 @@ const pageList = ref([
   { 
     page: 'UserReview',
     name: '내 후기', 
-    path: '/review/user', 
+    path: '/review', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'CreateReview',
+    name: '후기 작성', 
+    path: '/review/create', 
     showLogo: false,
     showLeftBtn: true,
     showRightBtn: false 
@@ -325,7 +333,7 @@ function handleMenuClick(action) {
       break;
 
     case 'UserReview':
-      navigateTo(router, '/review/user');
+      navigateTo(router, '/review');
       break;
   }
 }

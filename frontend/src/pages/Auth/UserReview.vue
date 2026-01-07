@@ -76,9 +76,9 @@
                               <v-icon 
                                   v-for="n in 5" 
                                   :key="n"
-                                  icon="$cus-star-fill"
+                              :icon="n <= group.score ? '$cus-star-fill' : '$cus-star-line'"
                                   size="16"
-                                  color="#FFB800"
+                              :color="n <= group.score ? '#FFB800' : '#E5E7EB'"
                               ></v-icon>
                           </v-row>
                       </v-col>
@@ -104,12 +104,12 @@
                     <v-btn
                       variant="outlined"
                       class="active-thin-btn | mt-3"
-                      @click="handleClickBtn('goToNext')"
+                      @click="handleClickBtn('goToReviewCreate')"
                     >후기 작성하기</v-btn>
                     <v-btn
                       variant="outlined"
                       class="unactive-thin-btn | mt-3"
-                      @click="handleClickBtn('goToNext')"
+                      @click="handleClickBtn('goToReviewCreate')"
                     >후기 수정하기</v-btn>
                 </v-card>
             </v-col>
@@ -170,7 +170,7 @@ const reviewList = ref([
     groupId: 103,
     reviewerId: 15,
     reviewedId: 25,
-    score: 5,
+    score: 3,
     comment: "같은 고민을 나누니 위로가 되었어요. 서로 응원하며 힘내봐요!",
     // 모임 정보
     title: "취업고민 같이 나눠요",
@@ -234,8 +234,8 @@ function getTimeSlotText(timeSlotId) {
 
 function handleClickBtn(action, value) {
   switch (action) {
-    case 'goToDetail':
-      navigateTo(router, '/group/detail', { id: value });
+    case 'goToReviewCreate':
+      navigateTo(router, '/review/create', { id: value });
       break;
 
     default:
@@ -374,4 +374,5 @@ function handleClickBtn(action, value) {
     background-color: #FFF5F0;
     color: #FF6129;
 }
+
 </style>
