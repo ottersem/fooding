@@ -299,7 +299,7 @@ function handleClickBtn(action, value) {
 
 .filter-btn-selected {
   background-color: #FF6129 !important;
-  border: 0.67px solid #FF6129 !important;
+  border: 0.7px solid #FF6129 !important;
 }
 
 .filter-btn-selected .filter-number {
@@ -316,7 +316,7 @@ function handleClickBtn(action, value) {
 
 .filter-btn-unselected {
   background-color: #F9FAFB !important;
-  border: 0.67px solid #E5E7EB !important;
+  border: 0.7px solid #E5E7EB !important;
 }
 
 .filter-btn-unselected .filter-number {
@@ -345,7 +345,7 @@ function handleClickBtn(action, value) {
     0 1px 2px -1px rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    border: 0.67px solid #F3F4F6;
+    border: 0.7px solid #F3F4F6;
     background-color: #FFFFFF;
 }
 
@@ -357,7 +357,7 @@ function handleClickBtn(action, value) {
 
 .category-chip {
     background-color: #FFF4F0;
-    border: 0.67px solid #FFE0D4;
+    border: 0.7px solid #FFE0D4;
     color: #FF6129;
     font-size: 12px;
     padding-left: 16px !important;
@@ -444,7 +444,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #E5E7EB;
+    border: 0.7px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
@@ -455,7 +455,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #E5E7EB;
+    border: 0.7px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
@@ -466,7 +466,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #FF6129;
+    border: 0.7px solid #FF6129;
     background-color: #FFF5F0;
     color: #FF6129;
 }
