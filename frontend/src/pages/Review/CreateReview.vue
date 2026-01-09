@@ -15,36 +15,36 @@
             variant="outlined"
         >
             <v-row no-gutters class="align-center | card-title">
-                {{ gourpInfo.title }}
+                {{ groupInfo.title }}
             </v-row>
 
             <v-row no-gutters class="pa-0 | mt-3 | mb-3">
                 <v-col cols="12" class="mb-1">
                     <v-row no-gutters class="align-center">
                         <v-icon color="#6A7282" size="18" class="mr-1">mdi-clock-time-four-outline</v-icon>
-                        <span class="description-text">{{ gourpInfo.meetingDate }} {{ getTimeSlotText(gourpInfo.timeSlotId) }}</span>
+                        <span class="description-text">{{ groupInfo.meetingDate }} {{ getTimeSlotText(groupInfo.timeSlotId) }}</span>
                     </v-row>
                 </v-col>
                 <v-col cols="12">
                     <v-row no-gutters class="align-center">
                         <v-icon color="#6A7282" size="18" class="mr-1">mdi-map-marker-outline</v-icon>
-                        <span class="description-text">{{ gourpInfo.place }}</span>
+                        <span class="description-text">{{ groupInfo.place }}</span>
                     </v-row>
                 </v-col>
             </v-row>
 
             <v-row no-gutters class="align-center">
-                <v-chip v-if="gourpInfo.categoryId === 1" size="small" variant="outline" class="category-chip" prepend-icon="mdi-coffee">일상/친목</v-chip>
-                <v-chip v-if="gourpInfo.categoryId === 2" size="small" variant="outline" class="category-chip" prepend-icon="mdi-trophy">대외활동/공모전</v-chip>
-                <v-chip v-if="gourpInfo.categoryId === 3" size="small" variant="outline" class="category-chip" prepend-icon="mdi-briefcase">커리어</v-chip>
-                <v-chip v-if="gourpInfo.categoryId === 4" size="small" variant="outline" class="category-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
-                <v-chip v-if="gourpInfo.categoryId === 5" size="small" variant="outline" class="category-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
+                <v-chip v-if="groupInfo.categoryId === 1" size="small" variant="outline" class="category-chip" prepend-icon="mdi-coffee">일상/친목</v-chip>
+                <v-chip v-if="groupInfo.categoryId === 2" size="small" variant="outline" class="category-chip" prepend-icon="mdi-trophy">대외활동/공모전</v-chip>
+                <v-chip v-if="groupInfo.categoryId === 3" size="small" variant="outline" class="category-chip" prepend-icon="mdi-briefcase">커리어</v-chip>
+                <v-chip v-if="groupInfo.categoryId === 4" size="small" variant="outline" class="category-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
+                <v-chip v-if="groupInfo.categoryId === 5" size="small" variant="outline" class="category-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
                 
-                <v-chip v-if="gourpInfo.interestId === 1" size="small" variant="outline" class="tag-chip">일상/친목</v-chip>
-                <v-chip v-if="gourpInfo.interestId === 2" size="small" variant="outline" class="tag-chip">대외활동/공모전</v-chip>
-                <v-chip v-if="gourpInfo.interestId === 3" size="small" variant="outline" class="tag-chip">커리어</v-chip>
-                <v-chip v-if="gourpInfo.interestId === 4" size="small" variant="outline" class="tag-chip">스터디</v-chip>
-                <v-chip v-if="gourpInfo.interestId === 5" size="small" variant="outline" class="tag-chip">취미/여가</v-chip>
+                <v-chip v-if="groupInfo.interestId === 1" size="small" variant="outline" class="tag-chip">일상/친목</v-chip>
+                <v-chip v-if="groupInfo.interestId === 2" size="small" variant="outline" class="tag-chip">대외활동/공모전</v-chip>
+                <v-chip v-if="groupInfo.interestId === 3" size="small" variant="outline" class="tag-chip">커리어</v-chip>
+                <v-chip v-if="groupInfo.interestId === 4" size="small" variant="outline" class="tag-chip">스터디</v-chip>
+                <v-chip v-if="groupInfo.interestId === 5" size="small" variant="outline" class="tag-chip">취미/여가</v-chip>
             </v-row>
         </v-card>
 
@@ -108,7 +108,7 @@ import SaveFooter from '@/components/SaveFooter.vue';
 const emit = defineEmits(['hide-top-appbar']);
 const router = useRouter(); 
 
-const gourpInfo = ref({
+const groupInfo = ref({
   id: 1,
   creatorId: 10,
   categoryId: 1, // 일상/친목
