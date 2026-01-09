@@ -76,7 +76,7 @@
             </v-row>
             <v-row no-gutters class="d-flex | align-center | justify-space-between | card-desc">
               <span>{{ groupInfo.participants.current }}/{{ groupInfo.participants.max }}명 참여중</span>
-              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('manageApplicants')">신청자 관리 ></v-btn>
+              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('gotoJoin')">신청자 관리 ></v-btn>
             </v-row>
 
             <!-- 호스트 -->
@@ -96,12 +96,34 @@
                 <v-chip class="part-chip" size="small" variant="flat">참여자</v-chip>
               </v-col>
             </v-row>
-
         </v-card>
 
 
         <v-row no-gutters class="justify-center | align-center | info-box | mt-6">
           카카오톡 그룹 채팅방에서 그룹원들과 자유롭게 소통하고 만남을 조율해보세요!
+        </v-row>
+
+        <v-row no-gutters class="justify-center | align-center | mt-10 | mb-10">
+          <v-btn
+            variant="outlined"
+            class="active-kakao-btn"
+            @click="handleClickBtn('gotoKakao')"
+          >카카오톡 그룹 채팅 시작하기</v-btn>
+          <v-btn
+            variant="outlined"
+            class="active-outline-btn | mt-2"
+            @click="handleClickBtn('goToNext')"
+          >신청 취소하기</v-btn>
+          <v-btn
+            variant="outlined"
+            class="active-btn | mt-2"
+            @click="handleClickBtn('goToNext')"
+          >모임 종료하기</v-btn>
+          <v-btn
+            variant="outlined"
+            class="active-outline-btn | mt-2"
+            @click="handleClickBtn('goToNext')"
+          >모임 삭제하기</v-btn>
         </v-row>
 
     </v-container>
@@ -116,6 +138,7 @@ import SaveFooter from '@/components/SaveFooter.vue';
 
 const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 const route = useRoute();
+const router = useRouter(); 
 
 // 쿼리 파라미터에서 id 가져오기
 const groupId = computed(() => route.query.id);
@@ -208,7 +231,12 @@ function handleClickBtn(action, value) {
       console.log('신청자 관리');
       break;
 
-    case 'saveReview':
+    case 'gotoJoin':
+      navigateTo(router, '/group/join');
+      break;
+
+    case 'gotoKakao':
+      navigateTo(router, '/group/link');
       break;
 
     default:
@@ -301,6 +329,19 @@ function handleClickBtn(action, value) {
 }
 .part-chip :deep(.v-icon) {
   color: #FF6129 !important;
+}
+
+.active-kakao-btn {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  background-color: #FEE500;
+  border: 0px;
+  border-radius: 10px;
+  color: #3C1E1E;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
 }
 
 .manage-btn {

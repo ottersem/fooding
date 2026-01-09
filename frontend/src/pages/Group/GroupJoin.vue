@@ -13,6 +13,7 @@ const router = useRouter();
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
+    emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {
