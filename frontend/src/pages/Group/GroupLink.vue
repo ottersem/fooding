@@ -51,11 +51,14 @@
 
 <script setup>
 // ----- 선언부 ----- //
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
-const router = useRouter(); 
+const route = useRoute();
+const router = useRouter();  
+
+const groupId = computed(() => route.query.id);
 
 const groupInfo = ref({
   id: 1,

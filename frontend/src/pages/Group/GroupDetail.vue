@@ -232,11 +232,11 @@ function handleClickBtn(action, value) {
       break;
 
     case 'gotoJoin':
-      navigateTo(router, '/group/join');
+      navigateTo(router, '/group/join', { id: groupInfo.value.id });
       break;
 
     case 'gotoKakao':
-      navigateTo(router, '/group/link');
+      navigateTo(router, '/group/link', { id: groupInfo.value.id });
       break;
 
     default:
