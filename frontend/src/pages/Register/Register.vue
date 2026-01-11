@@ -168,7 +168,7 @@ function handleClickBtn(action) {
 
 .header-chip {
   background-color: #F9FAFB;
-  border: 0.67px solid #E5E8EB;
+  border: 0.7px solid #E5E8EB;
   font-size: 14px;
   font-weight: 400;
   min-height: 38px;

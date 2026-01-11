@@ -37,9 +37,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "user-profile" */ "@/pages/Auth/UserProfile.vue")
   },
   {
-    path: '/user/review',
+    path: '/review',
     name: 'UserReview',
     component: () => import(/* webpackChunkName: "user-review" */ "@/pages/Auth/UserReview.vue")
+  },
+  {
+    path: '/review/create',
+    name: 'CreateReview',
+    component: () => import(/* webpackChunkName: "user-review" */ "@/pages/Review/CreateReview.vue")
   },
   {
     path: '/group',
@@ -57,9 +62,29 @@ const routes = [
     component: () => import(/* webpackChunkName: "group-create" */ "@/pages/Group/GroupCreate.vue")
   },
   {
+    path: '/group/edit',
+    name: 'GroupEdit',
+    component: () => import(/* webpackChunkName: "group-edit" */ "@/pages/Group/GroupEdit.vue")
+  },
+  {
+    path: '/group/join',
+    name: 'GroupJoin',
+    component: () => import(/* webpackChunkName: "group-join" */ "@/pages/Group/GroupJoin.vue")
+  },
+  {
+    path: '/group/link',
+    name: 'GroupLink',
+    component: () => import(/* webpackChunkName: "group-link" */ "@/pages/Group/GroupLink.vue")
+  },
+  {
     path: '/group/user',
     name: 'GroupUser',
     component: () => import(/* webpackChunkName: "group-user" */ "@/pages/Group/GroupUser.vue")
+  },
+  {
+    path: '/group/review',
+    name: 'GroupReview',
+    component: () => import(/* webpackChunkName: "group-review" */ "@/pages/Group/GroupReview.vue")
   },
   {
     path: '/register',
@@ -85,7 +110,7 @@ const routes = [
     path: '/register/time',
     name: 'RegisterTime',
     component: () => import(/* webpackChunkName: "register-time" */ "@/pages/Register/RegisterTime.vue")
-  },
+  }
 ];
 
 const router = createRouter({
