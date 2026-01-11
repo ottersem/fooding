@@ -76,11 +76,16 @@
                     </v-row>
 
                     <v-row no-gutters class="align-center">
-                        <v-chip v-if="group.interestId === 1" size="small" class="tag-chip" prepend-icon="mdi-coffee">일상/친목</v-chip>
-                        <v-chip v-if="group.interestId === 2" size="small" class="tag-chip" prepend-icon="mdi-trophy">대외활동/공모전</v-chip>
-                        <v-chip v-if="group.interestId === 3" size="small" class="tag-chip" prepend-icon="mdi-briefcase">커리어</v-chip>
-                        <v-chip v-if="group.interestId === 4" size="small" class="tag-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
-                        <v-chip v-if="group.interestId === 5" size="small" class="tag-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
+                        <v-chip v-if="group.categoryId === 1" size="small" variant="outline" class="category-chip" prepend-icon="mdi-coffee">일상/친목</v-chip>
+                        <v-chip v-if="group.categoryId === 2" size="small" variant="outline" class="category-chip" prepend-icon="mdi-trophy">대외활동/공모전</v-chip>
+                        <v-chip v-if="group.categoryId === 3" size="small" variant="outline" class="category-chip" prepend-icon="mdi-briefcase">커리어</v-chip>
+                        <v-chip v-if="group.categoryId === 4" size="small" variant="outline" class="category-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
+                        <v-chip v-if="group.categoryId === 5" size="small" variant="outline" class="category-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
+                        <v-chip v-if="group.interestId === 1" size="small" variant="outline" class="tag-chip">일상/친목</v-chip>
+                        <v-chip v-if="group.interestId === 2" size="small" variant="outline" class="tag-chip">대외활동/공모전</v-chip>
+                        <v-chip v-if="group.interestId === 3" size="small" variant="outline" class="tag-chip">커리어</v-chip>
+                        <v-chip v-if="group.interestId === 4" size="small" variant="outline" class="tag-chip">스터디</v-chip>
+                        <v-chip v-if="group.interestId === 5" size="small" variant="outline" class="tag-chip">취미/여가</v-chip>
                     </v-row>
                 </v-card>
             </v-col>
@@ -104,7 +109,8 @@ const groupList = ref([
   {
     id: 1,
     creatorId: 10,
-    interestId: 1, // 일상/친목
+    categoryId: 1, // 일상/친목
+    interestId: 1, // ㅁㄴㄹㅇ
     title: "점심 같이 먹을 사람 구해요",
     description: "혼밥보다는 함께 밥 먹으면서 수다떨 사람 찾아요. 편하게 이야기 나눠요!",
     meetingDate: "2025-12-10",
@@ -117,7 +123,8 @@ const groupList = ref([
   {
     id: 2,
     creatorId: 12,
-    interestId: 2, // 대외활동/공모전
+    categoryId: 2, // 대외활동/공모전
+    interestId: 2,
     title: "공모전 팀원 모집합니다",
     description: "마케팅 공모전 준비할 팀원을 찾습니다. 적극적이고 열정 있는 분 환영해요!",
     meetingDate: "2025-12-11",
@@ -130,7 +137,8 @@ const groupList = ref([
   {
     id: 3,
     creatorId: 15,
-    interestId: 3, // 커리어
+    categoryId: 3, // 커리어
+    interestId: 3,
     title: "취업고민 같이 나눠요",
     description: "취업 준비하면서 느끼는 고민들 편하게 얘기해요. 같은 목표를 가진 사람끼리 정보도 공유하고 동기부여도 받아요!",
     meetingDate: "2025-12-12",
@@ -143,7 +151,8 @@ const groupList = ref([
   {
     id: 4,
     creatorId: 18,
-    interestId: 4, // 스터디
+    categoryId: 4, // 스터디
+    interestId: 4,
     title: "알고리즘 스터디원 구합니다",
     description: "코딩테스트 준비를 위한 알고리즘 스터디 모집합니다. 주 2회 정기 모임 예정이에요.",
     meetingDate: "2025-12-13",
@@ -156,7 +165,8 @@ const groupList = ref([
   {
     id: 5,
     creatorId: 20,
-    interestId: 5, // 취미/여가
+    categoryId: 5, // 취미/여가
+    interestId: 5,
     title: "헬스 운동 친구 모집",
     description: "운동 친구 구합니다! 주 3회 저녁 시간대에 헬스장 같이 갈 사람 모여라~ 초보자 환영!",
     meetingDate: "2025-12-14",
@@ -216,7 +226,7 @@ function handleClickBtn(action, value) {
     0 1px 2px -1px rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    border: 0.67px solid #F3F4F6;
+    border: 0.7px solid #F3F4F6;
     background-color: #FFFFFF;
 }
 
@@ -226,11 +236,21 @@ function handleClickBtn(action, value) {
     color: #364153;
 }
 
+.category-chip {
+    background-color: #FFF4F0;
+    border: 0.7px solid #FFE0D4;
+    color: #FF6129;
+    font-size: 12px;
+    padding-left: 16px !important;
+    padding-right: 12px !important;
+}
+
 .tag-chip {
     background-color: #F3F4F6;
     color: #4A5565;
     font-size: 12px;
-    padding-left: 16px !important;
+    margin-left: 8px;
+    padding-left: 12px !important;
     padding-right: 12px !important;
 }
 
@@ -264,7 +284,7 @@ function handleClickBtn(action, value) {
     color: #0D9F6E !important;
 }
 
-.category-text {
+.categoryId-text {
     font-size: 12px;
     color: #8B95A1;
 }
@@ -292,7 +312,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #E5E7EB;
+    border: 0.7px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
@@ -303,7 +323,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #E5E7EB;
+    border: 0.7px solid #E5E7EB;
     background-color: #FFFFFF;
     color: #191F28;
 }
@@ -314,7 +334,7 @@ function handleClickBtn(action, value) {
     letter-spacing: -0.08px;
     padding: 4px 8px;
     border-radius: 12px;
-    border: 0.67px solid #FF6129;
+    border: 0.7px solid #FF6129;
     background-color: #FFF5F0;
     color: #FF6129;
 }

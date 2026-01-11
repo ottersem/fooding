@@ -48,7 +48,8 @@
             <v-btn
               v-if="currentPageCfg.showRightBtn"
               icon="$cus-profile" 
-              variant="outlined" density="comfortable" rounded="circle" base-color="#F3F4F6" color="#F3F4F6"
+              variant="outlined" density="comfortable" rounded="circle"
+              class="profileIcon"
               @click="handleClickBtn('goToMypage')"
             ></v-btn>
             <div v-else style="width: 40px;"></div>
@@ -134,7 +135,7 @@
 // ----- 선언부 ----- //
 import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { navigateTo } from '@/common/RouterUtil.js';
+import { navigateTo, goBack } from '@/common/RouterUtil.js';
 import mainLogo from '@/assets/main-logo.svg';
 
 // 라우터 인스턴스 가져오기
@@ -159,6 +160,30 @@ const pageList = ref([
     page: 'GroupDetail',
     name: '모임 상세', 
     path: '/group/detail', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupEdit',
+    name: '모임 편집', 
+    path: '/group/edit', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupLink',
+    name: '그룹 채팅 링크 생성', 
+    path: '/group/link', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: true 
+  },
+  { 
+    page: 'GroupJoin',
+    name: '신청자 관리', 
+    path: '/group/join', 
     showLogo: false,
     showLeftBtn: true,
     showRightBtn: true 
@@ -198,7 +223,15 @@ const pageList = ref([
   { 
     page: 'UserReview',
     name: '내 후기', 
-    path: '/user/review', 
+    path: '/review', 
+    showLogo: false,
+    showLeftBtn: true,
+    showRightBtn: false 
+  },
+  { 
+    page: 'CreateReview',
+    name: '후기 작성', 
+    path: '/review/create', 
     showLogo: false,
     showLeftBtn: true,
     showRightBtn: false 
@@ -220,7 +253,7 @@ const isFabOpen = ref(false);
 const fabMenus = [
   { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
   { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
-  { text: '내 후기', icon: '$cus-document', action: 'myReview' },
+  { text: '내 후기', icon: '$cus-document', action: 'UserReview' },
   // { text: '프로필', icon: '$cus-profile', action: 'profile' },
 ];
 
@@ -299,8 +332,8 @@ function handleMenuClick(action) {
       navigateTo(router, '/group/user');
       break;
 
-    case 'myReview':
-      navigateTo(router, '/user/review');
+    case 'UserReview':
+      navigateTo(router, '/review');
       break;
   }
 }
@@ -313,7 +346,7 @@ function handleClickBtn(action) {
       break;
 
     case 'goToBack':
-      navigateTo(router, '/');
+      goBack(router);
       break;
 
     default:
