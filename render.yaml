@@ -1,0 +1,55 @@
+services:
+  # Frontend Service
+  - type: web
+    name: fooding-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    envVars:
+      - key: VITE_API_URL
+        value: https://fooding-backend.onrender.com/api
+    routes:
+      - type: http
+        path: /
+    autoDeploy: true
+    disk:
+      name: frontend-static
+      sizeGB: 1
+      mountPath: /app/dist
+
+  # Backend Service
+  - type: web
+    name: fooding-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          name: fooding-db
+          property: connectionString
+      - key: MYSQL_ROOT_PASSWORD
+        sync: false
+      - key: MYSQL_DATABASE
+        value: fooding
+    routes:
+      - type: http
+        path: /api
+    autoDeploy: true
+    depends_on:
+      - fooding-db
+
+  # MySQL Database Service
+  - type: pserv
+    name: fooding-db
+    runtime: docker
+    image: mysql:8.0
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        sync: false
+      - key: MYSQL_DATABASE
+        value: fooding
+    disk:
+      name: mysql-data
+      sizeGB: 5
+      mountPath: /var/lib/mysql
