@@ -127,6 +127,38 @@
         </v-row>
 
     </v-container>
+
+  <!-- 카카오 다이얼로그 -->
+  <v-dialog v-model="kakaoDialog.dialogActive" width="100%">
+    <v-card style="padding: 24px 16px; border-radius: 24px;">
+      <v-btn 
+        icon="mdi-close" variant="text" size="small"
+        @click="kakaoDialog.dialogActive = false"
+        style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
+      />
+
+      <v-card-title>
+        <v-row no-gutters class="align-center | justify-center">
+          <v-icon size="64" color="#FF6129" icon="$cus-complete-icon"/>
+        </v-row>
+        <v-row no-gutters class="align-center | justify-center | mt-3"
+          style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
+        >
+          {{ kakaoDialog.title }}
+        </v-row>
+      </v-card-title>
+
+      <v-card-text style="padding: 0px; margin-bottom: 12px;">
+        <v-row no-gutters
+        style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
+        v-html="kakaoDialog.text"/>
+      </v-card-text>
+
+      <template v-slot:actions>
+          <v-btn class="active-btn" style="border-radius: 16px;" variant="outlined" @click="kakaoDialog.okButton">그룹 채팅 시작하기</v-btn>
+      </template>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -184,6 +216,14 @@ const groupInfo = ref({
   status: 0, // 모집중
 });
 
+const kakaoDialog = ref({
+  title: '',
+  text: '',
+  isActive: false,
+  okButton() {}
+});
+
+
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-bottom-appbar');
@@ -236,13 +276,29 @@ function handleClickBtn(action, value) {
       break;
 
     case 'gotoKakao':
-      navigateTo(router, '/group/link', { id: groupInfo.value.id });
+      openKakaoDialog(
+        '그룹 채팅을 시작하시겠습니까?',
+        '그룹 채팅을 시작하면 현재 참여 인원이 확정되며, 모임 상태가 \'진행\'으로 변경됩니다.',
+        () => {
+          kakaoDialog.value.dialogActive = false;
+          navigateTo(router, '/group/link', { id: groupInfo.value.id });
+        }
+      );
+      
       break;
 
     default:
       console.error('알 수 없는 액션 타입:', action);
   }
 }
+
+function openKakaoDialog(title, text, onConfirm) {
+  kakaoDialog.value.title = title;
+  kakaoDialog.value.text = text;
+  kakaoDialog.value.okButton = onConfirm;
+  kakaoDialog.value.dialogActive = true;
+}
+
 
 </script> 
 
