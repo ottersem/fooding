@@ -8,6 +8,7 @@ pydantic==2.9.0
 pydantic-core==2.23.2
 
 pymysql==1.1.1
+cryptography==43.0.1
 python-dotenv==1.0.1
 
 typing-extensions==4.12.2
