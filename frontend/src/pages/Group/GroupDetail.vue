@@ -13,6 +13,13 @@
             <v-chip v-if="groupInfo.categoryId === 4" size="small" variant="text" class="category-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
             <v-chip v-if="groupInfo.categoryId === 5" size="small" variant="text" class="category-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
           </v-col>
+          <v-col>
+            <v-btn
+              icon="mdi-pencil-outline" 
+              class="float-right" variant="text" density="comfortable" color="#6A7282"
+              @click="handleClickBtn('goToEdit')"
+            ></v-btn>
+          </v-col>
         </v-row>
         <v-row 
             no-gutters justify="start" 
@@ -76,7 +83,7 @@
             </v-row>
             <v-row no-gutters class="d-flex | align-center | justify-space-between | card-desc">
               <span>{{ groupInfo.participants.current }}/{{ groupInfo.participants.max }}명 참여중</span>
-              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('gotoJoin')">신청자 관리 ></v-btn>
+              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('goToJoin')">신청자 관리 ></v-btn>
             </v-row>
 
             <!-- 호스트 -->
@@ -107,7 +114,7 @@
           <v-btn
             variant="outlined"
             class="kakao-active-btn"
-            @click="handleClickBtn('gotoKakao')"
+            @click="handleClickBtn('goToKakao')"
           >카카오톡 그룹 채팅 시작하기</v-btn>
           <v-btn
             variant="outlined"
@@ -278,11 +285,15 @@ function handleClickBtn(action, value) {
       console.log('신청자 관리');
       break;
 
-    case 'gotoJoin':
+    case 'goToJoin':
       navigateTo(router, '/group/join', { id: groupInfo.value.id });
       break;
 
-    case 'gotoKakao':
+    case 'goToEdit':
+      navigateTo(router, '/group/edit', { id: groupInfo.value.id });
+      break;
+
+    case 'goToKakao':
       openKakaoDialog(
         '그룹 채팅을 시작하시겠습니까?',
         '그룹 채팅을 시작하면 현재 참여 인원이 확정되며, 모임 상태가 \'진행\'으로 변경됩니다.',
