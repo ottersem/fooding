@@ -106,7 +106,7 @@
         <v-row no-gutters class="justify-center | align-center | mt-10 | mb-10">
           <v-btn
             variant="outlined"
-            class="active-kakao-btn"
+            class="kakao-active-btn"
             @click="handleClickBtn('gotoKakao')"
           >카카오톡 그룹 채팅 시작하기</v-btn>
           <v-btn
@@ -139,7 +139,7 @@
 
       <v-card-title>
         <v-row no-gutters class="align-center | justify-center">
-          <v-icon size="64" color="#FF6129" icon="$cus-complete-icon"/>
+          <v-icon size="64" color="#FF6129" icon="$cus-kakao"/>
         </v-row>
         <v-row no-gutters class="align-center | justify-center | mt-3"
           style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
@@ -150,13 +150,20 @@
 
       <v-card-text style="padding: 0px; margin-bottom: 12px;">
         <v-row no-gutters
-        style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
-        v-html="kakaoDialog.text"/>
+          style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
+        >
+          {{ groupInfo.title }}<br>
+          현재 참여 인원: {{ groupInfo.participants.current }}명
+        </v-row>
+        
+        <v-row 
+          no-gutters class="justify-center | align-center | info-box | mt-6 | mb-2" 
+          v-html="kakaoDialog.text"
+        />
       </v-card-text>
 
-      <template v-slot:actions>
-          <v-btn class="active-btn" style="border-radius: 16px;" variant="outlined" @click="kakaoDialog.okButton">그룹 채팅 시작하기</v-btn>
-      </template>
+      <v-btn class="kakao-active-btn" variant="outlined" @click="kakaoDialog.okButton">그룹 채팅 시작하기</v-btn>
+      <v-btn class="kakao-outline-btn | mt-2" variant="outlined" @click="kakaoDialog.dialogActive = false">취소</v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -387,7 +394,7 @@ function openKakaoDialog(title, text, onConfirm) {
   color: #FF6129 !important;
 }
 
-.active-kakao-btn {
+.kakao-active-btn {
   width: 100%;
   height: 48px;
   min-height: 48px;
@@ -395,6 +402,18 @@ function openKakaoDialog(title, text, onConfirm) {
   border: 0px;
   border-radius: 10px;
   color: #3C1E1E;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+}
+
+.kakao-outline-btn {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  border: 0.7px solid #D1D5DC;
+  border-radius: 10px;
+  color: #364153;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.15px;

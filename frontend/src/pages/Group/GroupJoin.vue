@@ -123,7 +123,7 @@ const desc = `${groupInfo.value.participants.current || 0}/${groupInfo.value.par
 
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
-    
+    emit('hide-bottom-appbar');
 });
 
 onUnmounted(() => {
