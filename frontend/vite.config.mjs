@@ -12,7 +12,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/DungDong/' : '',
+  base: process.env.NODE_ENV === 'production' ? '/fooding/' : '',
   build: {
     outDir: 'docs',
     emptyOutDir: true,
@@ -51,17 +51,6 @@ export default defineConfig({
       '.tsx',
       '.vue',
     ],
-  },
-  server: {
-    port: 3000,
-    host: true, // 로컬 네트워크에서 접근 가능하도록 설정
-    proxy: {
-      '/api': {
-        target: 'https://dungdong-be.onrender.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
   },
   css: {
     preprocessorOptions: {
