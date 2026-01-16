@@ -4,7 +4,7 @@
  */
 class HttpClient {
   constructor() {
-    this.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+    this.baseURL = import.meta.env.VITE_API_BASE_URL || 'https://fooding-backend-e0yf.onrender.com';
     this.timeout = import.meta.env.VITE_API_TIMEOUT || 10000;
     this.defaultHeaders = {
       'Content-Type': 'application/json',

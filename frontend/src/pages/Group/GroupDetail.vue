@@ -13,6 +13,13 @@
             <v-chip v-if="groupInfo.categoryId === 4" size="small" variant="text" class="category-chip" prepend-icon="mdi-book-open-page-variant">스터디</v-chip>
             <v-chip v-if="groupInfo.categoryId === 5" size="small" variant="text" class="category-chip" prepend-icon="mdi-palette">취미/여가</v-chip>
           </v-col>
+          <v-col>
+            <v-btn
+              icon="mdi-pencil-outline" 
+              class="float-right" variant="text" density="comfortable" color="#6A7282"
+              @click="handleClickBtn('goToEdit')"
+            ></v-btn>
+          </v-col>
         </v-row>
         <v-row 
             no-gutters justify="start" 
@@ -76,7 +83,7 @@
             </v-row>
             <v-row no-gutters class="d-flex | align-center | justify-space-between | card-desc">
               <span>{{ groupInfo.participants.current }}/{{ groupInfo.participants.max }}명 참여중</span>
-              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('gotoJoin')">신청자 관리 ></v-btn>
+              <v-btn variant="text" class="manage-btn" @click="handleClickBtn('goToJoin')">신청자 관리 ></v-btn>
             </v-row>
 
             <!-- 호스트 -->
@@ -106,8 +113,8 @@
         <v-row no-gutters class="justify-center | align-center | mt-10 | mb-10">
           <v-btn
             variant="outlined"
-            class="active-kakao-btn"
-            @click="handleClickBtn('gotoKakao')"
+            class="kakao-active-btn"
+            @click="handleClickBtn('goToKakao')"
           >카카오톡 그룹 채팅 시작하기</v-btn>
           <v-btn
             variant="outlined"
@@ -127,6 +134,45 @@
         </v-row>
 
     </v-container>
+
+  <!-- 카카오 다이얼로그 -->
+  <v-dialog v-model="kakaoDialog.dialogActive" width="100%">
+    <v-card style="padding: 24px 16px; border-radius: 24px;">
+      <v-btn 
+        icon="mdi-close" variant="text" size="small"
+        @click="kakaoDialog.dialogActive = false"
+        style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
+      />
+
+      <v-card-title>
+        <v-row no-gutters class="align-center | justify-center">
+          <v-icon size="64" color="#FF6129" icon="$cus-kakao"/>
+        </v-row>
+        <v-row no-gutters class="align-center | justify-center | mt-3"
+          style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
+        >
+          {{ kakaoDialog.title }}
+        </v-row>
+      </v-card-title>
+
+      <v-card-text style="padding: 0px; margin-bottom: 12px;">
+        <v-row no-gutters
+          style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
+        >
+          {{ groupInfo.title }}<br>
+          현재 참여 인원: {{ groupInfo.participants.current }}명
+        </v-row>
+        
+        <v-row 
+          no-gutters class="justify-center | align-center | info-box | mt-6 | mb-2" 
+          v-html="kakaoDialog.text"
+        />
+      </v-card-text>
+
+      <v-btn class="kakao-active-btn" variant="outlined" @click="kakaoDialog.okButton">그룹 채팅 시작하기</v-btn>
+      <v-btn class="kakao-outline-btn | mt-2" variant="outlined" @click="kakaoDialog.dialogActive = false">취소</v-btn>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -184,6 +230,14 @@ const groupInfo = ref({
   status: 0, // 모집중
 });
 
+const kakaoDialog = ref({
+  title: '',
+  text: '',
+  isActive: false,
+  okButton() {}
+});
+
+
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   emit('hide-bottom-appbar');
@@ -231,18 +285,38 @@ function handleClickBtn(action, value) {
       console.log('신청자 관리');
       break;
 
-    case 'gotoJoin':
+    case 'goToJoin':
       navigateTo(router, '/group/join', { id: groupInfo.value.id });
       break;
 
-    case 'gotoKakao':
-      navigateTo(router, '/group/link', { id: groupInfo.value.id });
+    case 'goToEdit':
+      navigateTo(router, '/group/edit', { id: groupInfo.value.id });
+      break;
+
+    case 'goToKakao':
+      openKakaoDialog(
+        '그룹 채팅을 시작하시겠습니까?',
+        '그룹 채팅을 시작하면 현재 참여 인원이 확정되며, 모임 상태가 \'진행\'으로 변경됩니다.',
+        () => {
+          kakaoDialog.value.dialogActive = false;
+          navigateTo(router, '/group/link', { id: groupInfo.value.id });
+        }
+      );
+      
       break;
 
     default:
       console.error('알 수 없는 액션 타입:', action);
   }
 }
+
+function openKakaoDialog(title, text, onConfirm) {
+  kakaoDialog.value.title = title;
+  kakaoDialog.value.text = text;
+  kakaoDialog.value.okButton = onConfirm;
+  kakaoDialog.value.dialogActive = true;
+}
+
 
 </script> 
 
@@ -331,7 +405,7 @@ function handleClickBtn(action, value) {
   color: #FF6129 !important;
 }
 
-.active-kakao-btn {
+.kakao-active-btn {
   width: 100%;
   height: 48px;
   min-height: 48px;
@@ -339,6 +413,18 @@ function handleClickBtn(action, value) {
   border: 0px;
   border-radius: 10px;
   color: #3C1E1E;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+}
+
+.kakao-outline-btn {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  border: 0.7px solid #D1D5DC;
+  border-radius: 10px;
+  color: #364153;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.15px;
