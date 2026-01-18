@@ -270,6 +270,8 @@ const dialog = ref({
 // ----- 라이프 사이클 ----- //
 onMounted(() => {
   console.log(import.meta.env)
+  
+  checkLogin();
 });
 
 onUnmounted(() => {
@@ -288,14 +290,17 @@ watch(
 );
 
 // ----- 함수 정의 ----- //
-function initSurvey() {
-  localStorage.setItem('appInitialized', 'true');
-  localStorage.setItem('userSurvey', JSON.stringify(survey.value));
-  localStorage.removeItem('surveyId');
-  surveyId.value = null;
 
-  console.log("set localStorage appInitialized:", localStorage.getItem('appInitialized'))
-  console.log("set localStorage userSurvey:", localStorage.getItem('userSurvey'))
+// 로그인 체크
+function checkLogin() {
+  const user = localStorage.getItem('user');
+  const publicPages = ['/login', '/register', '/register/basic', '/register/desc', '/register/keyword', '/register/time'];
+  const isPublicPage = publicPages.includes(route.path);
+
+  if (!user && !isPublicPage) {
+    console.log('로그인 정보 없음 - 로그인 페이지로 이동');
+    navigateTo(router, '/login');
+  }
 }
 
 // 상단 앱 바 숨기기

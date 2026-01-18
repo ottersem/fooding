@@ -60,7 +60,8 @@
         @click="handleClickBtn('login')"
         variant="outlined"
         class="active-btn"
-        :disabled="!active"
+        :disabled="!active || isSubmitting"
+        :loading="isSubmitting"
         v-if="active"
       >로그인</v-btn>
       <v-btn
@@ -128,6 +129,7 @@ import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import BoxContainer from "@/components/BoxContainer.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
+import * as HttpHandler from '@/common/HttpHandler.js';
 
 const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 const router = useRouter(); 
@@ -137,6 +139,7 @@ const userPassword = ref('');
 
 const showPassword = ref(false);
 const active = ref(false);
+const isSubmitting = ref(false);
 
 watch([userEmail, userPassword], ([newUserEmail, newUserPassword]) => {
   // 두 항목 모두 null, undefined, 또는 빈 문자열이 아닐 때만 true
@@ -169,6 +172,39 @@ onUnmounted(() => {
 
 // ----- 함수 정의 ----- //
 
+async function handleLogin() {
+  if (!active.value || isSubmitting.value) return;
+
+  isSubmitting.value = true;
+
+  try {
+    const response = await HttpHandler.login({
+      email: userEmail.value,
+      password: userPassword.value,
+    });
+
+    console.log('로그인 성공 - 응답:', response);
+    localStorage.setItem('user', JSON.stringify(response));
+    navigateTo(router, '/group');
+
+  } catch (error) {
+    const message = error?.message || '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
+    console.error('로그인 실패:', error);
+    openDialog(
+      '로그인 실패',
+      message,
+      () => {
+        dialog.value.isActive = false;
+      },
+      true,
+      '확인'
+    );
+    
+  } finally {
+    isSubmitting.value = false;
+  }
+}
+
 function handleClickBtn(action) {
   switch (action) {
     case 'findIdPw':
@@ -182,6 +218,7 @@ function handleClickBtn(action) {
     case 'login':
       if (active.value) {
         console.log('로그인 버튼 클릭. 이메일:', userEmail.value, '비밀번호:', userPassword.value);
+        handleLogin();
         // 로그인 처리 로직
       }
       break;
