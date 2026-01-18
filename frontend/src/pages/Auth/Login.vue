@@ -60,7 +60,8 @@
         @click="handleClickBtn('login')"
         variant="outlined"
         class="active-btn"
-        :disabled="!active"
+        :disabled="!active || isSubmitting"
+        :loading="isSubmitting"
         v-if="active"
       >로그인</v-btn>
       <v-btn
@@ -88,6 +89,38 @@
     </v-row>
   </BoxContainer>
 
+  <!-- 다이얼로그 -->
+  <v-dialog v-model="dialog.isActive" width="100%">
+    <v-card style="padding: 24px 16px; border-radius: 24px;">
+      <v-btn 
+        icon="mdi-close" variant="text" size="small"
+        v-if="!dialog.isOneBtn"
+        @click="dialog.isActive = false"
+        style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
+      />
+
+      <v-card-title>
+        <v-row no-gutters class="align-center | justify-center">
+          <v-icon size="64" color="#FF6129" icon="$cus-complete"/>
+        </v-row>
+        <v-row no-gutters class="align-center | justify-center | mt-3"
+          style="color: #101828; font-size: 20px; font-weight: 400; letter-spacing: -0.45px;"
+        >
+          {{ dialog.title }}
+        </v-row>
+      </v-card-title>
+
+      <v-card-text style="padding: 0px; margin-bottom: 12px;">
+        <v-row no-gutters
+        style="justify-content: center; text-align: center; color: #6A7282; font-size: 14px; font-weight: 400; letter-spacing: -0.15px;"
+        v-html="dialog.text"/>
+      </v-card-text>
+
+      <template v-slot:actions>
+          <v-btn class="active-btn" style="border-radius: 16px;" variant="outlined" @click="dialog.okButton" :loading="isSubmitting">{{ dialog.okText }}</v-btn>
+      </template>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -96,6 +129,7 @@ import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import BoxContainer from "@/components/BoxContainer.vue";
 import { navigateTo } from '@/common/RouterUtil.js';
+import * as HttpHandler from '@/common/HttpHandler.js';
 
 const emit = defineEmits(['hide-top-appbar', 'hide-bottom-appbar']);
 const router = useRouter(); 
@@ -105,6 +139,7 @@ const userPassword = ref('');
 
 const showPassword = ref(false);
 const active = ref(false);
+const isSubmitting = ref(false);
 
 watch([userEmail, userPassword], ([newUserEmail, newUserPassword]) => {
   // 두 항목 모두 null, undefined, 또는 빈 문자열이 아닐 때만 true
@@ -113,6 +148,15 @@ watch([userEmail, userPassword], ([newUserEmail, newUserPassword]) => {
   
   active.value = isEmailValid && isPasswordValid;
 }, { immediate: true });
+
+const dialog = ref({
+  title: '',
+  text: '',
+  isActive: false,
+  isOneBtn: false,
+  okText: '확인',
+  okButton() {}
+});
 
 
 // ----- 라이프 사이클 ----- //
@@ -128,6 +172,39 @@ onUnmounted(() => {
 
 // ----- 함수 정의 ----- //
 
+async function handleLogin() {
+  if (!active.value || isSubmitting.value) return;
+
+  isSubmitting.value = true;
+
+  try {
+    const response = await HttpHandler.login({
+      email: userEmail.value,
+      password: userPassword.value,
+    });
+
+    console.log('로그인 성공 - 응답:', response);
+    localStorage.setItem('user', JSON.stringify(response));
+    navigateTo(router, '/group');
+
+  } catch (error) {
+    const message = error?.message || '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
+    console.error('로그인 실패:', error);
+    openDialog(
+      '로그인 실패',
+      message,
+      () => {
+        dialog.value.isActive = false;
+      },
+      true,
+      '확인'
+    );
+    
+  } finally {
+    isSubmitting.value = false;
+  }
+}
+
 function handleClickBtn(action) {
   switch (action) {
     case 'findIdPw':
@@ -141,6 +218,7 @@ function handleClickBtn(action) {
     case 'login':
       if (active.value) {
         console.log('로그인 버튼 클릭. 이메일:', userEmail.value, '비밀번호:', userPassword.value);
+        handleLogin();
         // 로그인 처리 로직
       }
       break;
@@ -149,6 +227,14 @@ function handleClickBtn(action) {
   }
 }
 
+function openDialog(title, text, onConfirm, isOneBtn, okText) {
+  dialog.value.title = title;
+  dialog.value.text = text;
+  dialog.value.okButton = onConfirm;
+  dialog.value.isActive = true;
+  dialog.value.isOneBtn = isOneBtn || false;
+  dialog.value.okText = okText || '확인';
+}
 </script>
 
 <style scoped>

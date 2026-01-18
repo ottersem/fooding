@@ -41,12 +41,12 @@
     />
 
     <!-- 다이얼로그 -->
-    <v-dialog v-model="dialog.dialogActive" width="100%">
+    <v-dialog v-model="dialog.isActive" width="100%">
     <v-card style="padding: 24px 16px; border-radius: 24px;">
       <v-btn 
         icon="mdi-close" variant="text" size="small"
         v-if="!dialog.isOneBtn"
-        @click="dialog.dialogActive = false"
+        @click="dialog.isActive = false"
         style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
       />
 
@@ -145,7 +145,7 @@ function handleClickBtn(action) {
         "회원가입 완료!", 
         "이제 비슷한 관심사를 가진<br/>학우들과 연결될 준비가 완료되었어요.", 
         () => {
-          dialog.value.dialogActive = false;
+          dialog.value.isActive = false;
           navigateTo(router, '/');
         },
         true, 
@@ -163,7 +163,7 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
   dialog.value.title = title;
   dialog.value.text = text;
   dialog.value.okButton = onConfirm;
-  dialog.value.dialogActive = true;
+  dialog.value.isActive = true;
   dialog.value.isOneBtn = isOneBtn || false;
   dialog.value.okText = okText || '확인';
 }

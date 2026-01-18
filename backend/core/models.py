@@ -117,7 +117,7 @@ class Group(Base):
   time_slot = relationship("TimeSlot", back_populates="groups")
   members = relationship("GroupMember", back_populates="group")
   reviews = relationship("Review", back_populates="group")
-
+  category = Column(String(30), nullable = False, default = '기타') #1/18 추가
 
 class GroupMember(Base):
   __tablename__ = "group_members"
