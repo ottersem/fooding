@@ -5,6 +5,7 @@ from datetime import date
 
 class MeetingCreateRequest(BaseModel):
   interest_id: int
+  category: str #1/18추가
   title: str
   description: str
   meeting_date: date
@@ -15,6 +16,7 @@ class MeetingCreateRequest(BaseModel):
 
 class MeetingUpdateRequest(BaseModel):
   interest_id: Optional[int] = None
+  category: Optional[str] = None #1/18추가
   title: Optional[str] = None
   description: Optional[str] = None
   meeting_date: Optional[date] = None
@@ -26,6 +28,7 @@ class MeetingUpdateRequest(BaseModel):
 class MeetingSummary(BaseModel):
   id: int
   title: str
+  category: str #1/18추가
   interest_name: str
   interest_code: str
   meeting_date: date
@@ -38,6 +41,7 @@ class MeetingSummary(BaseModel):
 class MeetingDetail(BaseModel):
   id: int
   title: str
+  category: str #1/18추가
   description: str
   interest_name: str
   interest_code: str
