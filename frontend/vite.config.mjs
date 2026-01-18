@@ -28,7 +28,6 @@ export default defineConfig({
       styles: {
         configFile: 'src/styles/settings.scss',
       },
-      customVariables: ['src/styles/variables.scss']
     }),
     Components(),
     svgLoader({ /* 플러그인 설정 (필요 시) */ })
