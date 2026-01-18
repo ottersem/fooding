@@ -98,12 +98,12 @@
   </v-app>
 
   <!-- 다이얼로그 -->
-  <v-dialog v-model="dialog.dialogActive" width="100%">
+  <v-dialog v-model="dialog.isActive" width="100%">
     <v-card style="padding: 24px 16px; border-radius: 24px;">
       <v-btn 
         icon="mdi-close" variant="text" size="small"
         v-if="!dialog.isOneBtn"
-        @click="dialog.dialogActive = false"
+        @click="dialog.isActive = false"
         style="position: absolute; top: 12px; right: 12px; color: #6B7280; z-index: 10;"
       />
 
@@ -252,8 +252,8 @@ const currentPageCfg = computed(() => {
 const isFabOpen = ref(false);
 const fabMenus = [
   { text: '내 모임', icon: '$cus-people', action: 'userGroup' },
-  { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
   { text: '내 후기', icon: '$cus-document', action: 'UserReview' },
+  { text: '모임 만들기', icon: 'mdi-plus', action: 'create' },
   // { text: '프로필', icon: '$cus-profile', action: 'profile' },
 ];
 
@@ -358,7 +358,7 @@ function openDialog(title, text, onConfirm, isOneBtn, okText) {
   dialog.value.title = title;
   dialog.value.text = text;
   dialog.value.okButton = onConfirm;
-  dialog.value.dialogActive = true;
+  dialog.value.isActive = true;
   dialog.value.isOneBtn = isOneBtn || false;
   dialog.value.okText = okText || '확인';
 }
