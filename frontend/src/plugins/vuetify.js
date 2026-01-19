@@ -27,6 +27,7 @@ import IconLogOut from '@/assets/icons/logout-icon.svg?component'
 import IconProfile from '@/assets/icons/profile-icon.svg?component'
 import IconFilterLine from '@/assets/icons/filter-icon-line.svg?component'
 import IconFooding from '@/assets/icons/fooding-icon.svg?component'
+import IconKakao from '@/assets/icons/kakao-icon.svg?component'
 
 const customAliases = {
   ...aliases,
@@ -45,6 +46,7 @@ const customAliases = {
   'cus-profile': IconProfile,
   'cus-filter-line': IconFilterLine,
   'cus-fooding': IconFooding,
+  'cus-kakao': IconKakao
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

@@ -40,6 +40,7 @@ def create_meeting(
   group = Group(
     creator_id=creator_id,
     interest_id=data.interest_id,
+    category = data.category, #1/18추가
     title=data.title,
     description=data.description,
     meeting_date=data.meeting_date,
@@ -103,6 +104,7 @@ def get_meeting_detail(
   return MeetingDetail(
     id=group.id,
     title=group.title,
+    category=group.category, #1/18
     description=group.description,
     interest_name=group.interest.name,
     interest_code=group.interest.code,
@@ -203,6 +205,7 @@ def get_main_meeting_list(
       MeetingSummary(
         id=g.id,
         title=g.title,
+        category=g.category, #1/18
         interest_name=g.interest.name,
         interest_code=g.interest.code,
         meeting_date=g.meeting_date,

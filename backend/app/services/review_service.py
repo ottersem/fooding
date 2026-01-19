@@ -109,3 +109,29 @@ def get_my_written_reviews(
     for r in reviews
   ]
   return MyWrittenReviewsResponse(reviews=items)
+
+#1/18 추가 : 내가 쓴 후기 중 특정 후기 1개 조회
+def get_review_detail(db: Session, review_id: int, user_id: int) -> ReviewItemResponse:
+  review = db.query(Review).filter(Review.id == review_id).first()
+  if not review:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="review not found",
+    )
+
+  # 내가 쓴 후기만 수정/조회 가능하게 
+  if review.reviewer_id != user_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="only reviewer can view this review",
+    )
+
+  return ReviewItemResponse(
+    id=review.id,
+    group_id=review.group_id,
+    reviewer_id=review.reviewer_id,
+    review_ed_id=review.review_ed_id,
+    score=review.score,
+    comment=review.comment,
+  )
+
